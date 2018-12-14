@@ -18,6 +18,37 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     
     
+    // Convert the number in the string to the corresponding
+    // Unicode character, e.g.
+    //    decodeNumeric("64", 10)   --> "@"
+    //    decodeNumeric("20ac", 16) --> "€"
+    func decodeNumeric(string : String, base : Int32) -> Character? {
+        let code = UInt32(strtoul(string, nil, base))
+        
+        if let c = UnicodeScalar(code){
+            return Character(c)
+        }
+        return "~"
+        
+    }
+    
+    
+    func nextInt(text:String)->String{
+        //get up to the first space, if there is one
+        var toRead = text
+        var result = ""
+        while (toRead.count > 0) {
+            if toRead.prefix(1) == ";"{
+                return result
+            }
+            result += toRead.prefix(1)
+            toRead = String(toRead.dropFirst())
+        }
+        
+        return result
+        
+        
+    }
     
     func getMainLable(tag:String)->String{
         //get up to the first space, if there is one
@@ -46,8 +77,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
         var tags = [""]
         
+        let followWithBreak = ["h1", "h2"]
+        
         while (toRead.count > 0) {
-            
             if toRead.prefix(2) == "</" {
                 //then we gotta see if we can close the last open tag
                 toRead = String(toRead.dropFirst(2))
@@ -59,6 +91,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     let header = getMainLable(tag: closingTag)
                     if tags.last == header {
                         tags.removeLast()
+                        if header == "p" {
+                            plainText += "\n"
+                            print("para break")
+                        }
+                        if followWithBreak.contains(header){
+                            plainText += "\n"
+                            print("add break for: " + header)
+                        }
+                        
                     }
                     print("dropped tag: " + closingTag + " (" + header + ")")
                     //print(tags)
@@ -70,8 +111,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 toRead = String(toRead.dropFirst(1))
                 if let idx = toRead.firstIndex(of:">") {
                     let openingTag = String(toRead.prefix(upTo: idx))
+                    
                     let header = getMainLable(tag: openingTag)
                     toRead = String(toRead.dropFirst(openingTag.count + 1))
+                    if openingTag.last == "/" {
+                        continue
+                    }
                     tags.append(header)
                     print("oppened tag: " + openingTag + " (" + header + ")")
                     //print(tags)
@@ -81,13 +126,24 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             }
             
             
-            let toInclude = ["p", "a", "b", "i"]
+            let toInclude = ["p", "a", "b", "i", "h1", "h2", "h3", "span"]
             
-            if tags.contains("p") {
+            if (tags.contains("p") || tags.contains("h2") || tags.contains("h1")) && !tags.contains("sup")  {
                 if let lastTag = tags.last {
                     if toInclude.contains(lastTag) {
+                        
+                        //print("appending!")
+                        if toRead.prefix(2) == "&#" {
+                            toRead = String(toRead.dropFirst(2))
+                            let nextIntString = nextInt(text: toRead)
+                            toRead = String(toRead.dropFirst(nextIntString.count+1))
+                            if let actualChar = decodeNumeric(string: nextIntString, base: 10) {
+                                plainText += String(actualChar)
+                            }
+                            continue
+                        }
                         plainText += toRead.prefix(1)
-                        print("appending!")
+                        
                     }
                 }
                 
@@ -104,7 +160,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         
         
-        let url = URL(string: "https://zh.wikipedia.org/zh-cn/%E6%9B%B2%E5%A5%87")!
+        let url = URL(string: "https://zh.wikipedia.org/wiki/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
