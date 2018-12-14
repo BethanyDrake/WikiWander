@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ViewController: UIViewController, URLSessionTaskDelegate {
 
@@ -67,10 +68,33 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    func getDictionary()->Int {
+        //at this point, just read the dictionary and return the number of entries.
+        if let path = Bundle.main.path(forResource: "cc-cedict", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let json = try? JSONSerialization.jsonObject(with: data, options: [])
+                
+                if let array = json as? [Any] {
+                    return array.count
+                }
+                else {
+                    return 0
+                }
+                
+                
+            } catch {
+                return 0
+            }
+            
+        }
+        return 0
+    }
+    
+    
     func getArticalContent(text: String)->String {
         //first off, lets just get the <p>s. Then we can add headings.
-        //let index = text.index(after: "<p>")
-        //var index = 0;
+  
         var plainText = ""
         
         var toRead = text
@@ -160,7 +184,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         
         
-        let url = URL(string: "https://zh.wikipedia.org/wiki/Special:Random")!
+        let url = URL(string: "https://en.wikipedia.org/wiki/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
