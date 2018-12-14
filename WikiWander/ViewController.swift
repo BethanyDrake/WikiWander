@@ -18,11 +18,28 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     
     
+    
+    func getMainLable(tag:String)->String{
+        //get up to the first space, if there is one
+        var toRead = tag
+        var result = ""
+        while (toRead.count > 0) {
+            if toRead.prefix(1) == " "{
+                return result
+            }
+            result += toRead.prefix(1)
+            toRead = String(toRead.dropFirst())
+        }
+        
+        return result
+        
+        
+    }
+    
     func getArticalContent(text: String)->String {
         //first off, lets just get the <p>s. Then we can add headings.
         //let index = text.index(after: "<p>")
         //var index = 0;
-        var open = false
         var plainText = ""
         
         var toRead = text
@@ -30,22 +47,51 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         var tags = [""]
         
         while (toRead.count > 0) {
-            if !open && toRead.prefix(3) == "<p>"{
-                print (text)
-                toRead = String(toRead.dropFirst(3))
-                open = true
+            
+            if toRead.prefix(2) == "</" {
+                //then we gotta see if we can close the last open tag
+                toRead = String(toRead.dropFirst(2))
+                if let idx = toRead.firstIndex(of:">") {
+                    
+                    let closingTag = String(toRead.prefix(upTo: idx))
+                    toRead = String(toRead.dropFirst(closingTag.count + 1))
+                    //we only want upto the first space, if there is one.
+                    let header = getMainLable(tag: closingTag)
+                    if tags.last == header {
+                        tags.removeLast()
+                    }
+                    print("dropped tag: " + closingTag + " (" + header + ")")
+                    //print(tags)
+                }
                 continue
             }
-            
-            if open && toRead.prefix(3) == "</p>"{
-                toRead = String(toRead.dropFirst(4))
-                plainText += "\n\n"
-                open = false
+           if toRead.prefix(1) == "<" {
+                //then see if we can open a new tag
+                toRead = String(toRead.dropFirst(1))
+                if let idx = toRead.firstIndex(of:">") {
+                    let openingTag = String(toRead.prefix(upTo: idx))
+                    let header = getMainLable(tag: openingTag)
+                    toRead = String(toRead.dropFirst(openingTag.count + 1))
+                    tags.append(header)
+                    print("oppened tag: " + openingTag + " (" + header + ")")
+                    //print(tags)
+                }
                 continue
+                
             }
             
-            if open {
-                plainText += toRead.prefix(1)
+            
+            let toInclude = ["p", "a", "b", "i"]
+            
+            if tags.contains("p") {
+                if let lastTag = tags.last {
+                    if toInclude.contains(lastTag) {
+                        plainText += toRead.prefix(1)
+                        print("appending!")
+                    }
+                }
+                
+                
             }
             
             toRead = String(toRead.dropFirst(1))
@@ -58,7 +104,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         
         
-        let url = URL(string: "https://en.wikipedia.org/wiki/Cookie")!
+        let url = URL(string: "https://zh.wikipedia.org/zh-cn/%E6%9B%B2%E5%A5%87")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
