@@ -26,7 +26,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
-    func doStuff (_ sender: UITapGestureRecognizer) throws {
+    func doStuff (_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: articleTextBox)
         print("touch loc: ", loc)
         
@@ -47,8 +47,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             let nsRange = NSRange(location: location, length: 1)
             print("G")
             if let selectedRange = selectedRange{
-                articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
+                if (selectedRange.lowerBound < 0 || selectedRange.upperBound > articleTextBox.text.count){
+                    
+                    print ("old selected range out of bounds")
+                }else{
+                   articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
+                }
+                
             }
+            
             print("H")
             if (nsRange.lowerBound < 0 || nsRange.upperBound > articleTextBox.text.count){
                 print ("out of bounds")
@@ -67,12 +74,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     // function which is triggered when handleTap is called
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         
-        do {
-            try doStuff(sender)
-        }
-        catch{
-            print(error)
-        }
+        doStuff(sender)
+
         
         
     }
