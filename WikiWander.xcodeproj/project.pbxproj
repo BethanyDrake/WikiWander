@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5223E3DE21C378B400AABA99 /* cc-cedict.json in Resources */ = {isa = PBXBuildFile; fileRef = 5223E3DD21C378B400AABA99 /* cc-cedict.json */; };
 		5223E3DF21C378C300AABA99 /* cc-cedict.json in Sources */ = {isa = PBXBuildFile; fileRef = 5223E3DD21C378B400AABA99 /* cc-cedict.json */; };
+		5223E3E121C71A6300AABA99 /* MyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223E3E021C71A6300AABA99 /* MyTextView.swift */; };
+		5223E3E321C71C4A00AABA99 /* TapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5223E3E221C71C4A00AABA99 /* TapView.xib */; };
 		52C64F3D21C1E87B009EB190 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C64F3C21C1E87B009EB190 /* AppDelegate.swift */; };
 		52C64F3F21C1E87B009EB190 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C64F3E21C1E87B009EB190 /* ViewController.swift */; };
 		52C64F4221C1E87B009EB190 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C64F4021C1E87B009EB190 /* Main.storyboard */; };
@@ -29,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		5223E3DD21C378B400AABA99 /* cc-cedict.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cc-cedict.json"; sourceTree = "<group>"; };
+		5223E3E021C71A6300AABA99 /* MyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextView.swift; sourceTree = "<group>"; };
+		5223E3E221C71C4A00AABA99 /* TapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TapView.xib; sourceTree = "<group>"; };
 		52C64F3921C1E87B009EB190 /* WikiWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C64F3C21C1E87B009EB190 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52C64F3E21C1E87B009EB190 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 				52C64F4321C1E87C009EB190 /* Assets.xcassets */,
 				52C64F4521C1E87C009EB190 /* LaunchScreen.storyboard */,
 				52C64F4821C1E87C009EB190 /* Info.plist */,
+				5223E3E021C71A6300AABA99 /* MyTextView.swift */,
+				5223E3E221C71C4A00AABA99 /* TapView.xib */,
 			);
 			path = WikiWander;
 			sourceTree = "<group>";
@@ -182,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52C64F4721C1E87C009EB190 /* LaunchScreen.storyboard in Resources */,
+				5223E3E321C71C4A00AABA99 /* TapView.xib in Resources */,
 				5223E3DE21C378B400AABA99 /* cc-cedict.json in Resources */,
 				52C64F4421C1E87C009EB190 /* Assets.xcassets in Resources */,
 				52C64F4221C1E87B009EB190 /* Main.storyboard in Resources */,
@@ -203,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5223E3DF21C378C300AABA99 /* cc-cedict.json in Sources */,
+				5223E3E121C71A6300AABA99 /* MyTextView.swift in Sources */,
 				52C64F3F21C1E87B009EB190 /* ViewController.swift in Sources */,
 				52C64F3D21C1E87B009EB190 /* AppDelegate.swift in Sources */,
 			);

@@ -12,11 +12,39 @@ import Foundation
 class ViewController: UIViewController, URLSessionTaskDelegate {
 
     @IBOutlet weak var articleTextBox: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        
+        articleTextBox.addGestureRecognizer(tap)
+        
+        articleTextBox.isUserInteractionEnabled = true
+        
+        self.view.addSubview(articleTextBox)
+        
     }
     
+    
+    // function which is triggered when handleTap is called
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        let loc = sender.location(in: articleTextBox)
+        print("touch loc: ", loc)
+        let i:UITextPosition = articleTextBox.closestPosition(to: loc)!
+        let realPos:UITextPosition = articleTextBox.position(from: i, offset: -1)!
+        let range = articleTextBox.textRange(from: realPos, to: articleTextBox.endOfDocument)
+        let closestChar = articleTextBox.text(in:range!)
+        
+        print(closestChar!)
+        
+        let location = (articleTextBox as UITextInput).offset(from: articleTextBox.beginningOfDocument, to: i)
+        
+        let nsRange = NSRange(location: location, length: 1)
+        
+        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.purple, range: nsRange)
+        
+    }
     
     
     // Convert the number in the string to the corresponding
@@ -184,7 +212,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         
         
-        let url = URL(string: "https://en.wikipedia.org/wiki/Special:Random")!
+        let url = URL(string: "https://zh.wikipedia.org/wiki/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
