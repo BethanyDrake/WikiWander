@@ -42,7 +42,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
         let nsRange = NSRange(location: location, length: 1)
         
-        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.purple, range: nsRange)
+        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: nsRange)
         
     }
     
