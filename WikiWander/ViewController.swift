@@ -139,20 +139,11 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
     
     func getMainLable(tag:String)->String{
-        //get up to the first space, if there is one
-        var toRead = tag
-        var result = ""
-        while (toRead.count > 0) {
-            if toRead.prefix(1) == " "{
-                return result
-            }
-            result += toRead.prefix(1)
-            toRead = String(toRead.dropFirst())
+        if let index = tag.firstIndex(of:" "){
+            let result = tag.prefix(upTo: index)
+            return String(result)
         }
-        
-        return result
-        
-        
+        return tag
     }
     
     var dictionary:[String:String] = [:]
