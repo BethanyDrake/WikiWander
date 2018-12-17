@@ -12,6 +12,8 @@ import Foundation
 class ViewController: UIViewController, URLSessionTaskDelegate {
 
     @IBOutlet weak var articleTextBox: UITextView!
+    @IBOutlet weak var wordTextBox: UITextView!
+    @IBOutlet weak var definitionTextBox: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +100,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             }
         }
         if let word = wordToLookUp, let value = dictionary[word] {
+            wordTextBox.text = word
+            definitionTextBox.text = value
             print(value)
         }else{
             print("no value found")

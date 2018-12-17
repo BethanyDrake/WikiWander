@@ -18,8 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRB-JH-L5x">
-                                <rect key="frame" x="16" y="40" width="343" height="461"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oiA-IS-80R">
+                                <rect key="frame" x="147" y="621" width="81" height="30"/>
+                                <state key="normal" title="Next Article"/>
+                                <connections>
+                                    <action selector="nextButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5w4-kB-oR6"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRB-JH-L5x">
+                                <rect key="frame" x="16" y="52" width="343" height="501"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <attributedString key="attributedText">
                                     <fragment>
@@ -32,41 +39,49 @@
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oiA-IS-80R">
-                                <rect key="frame" x="147" y="621" width="81" height="30"/>
-                                <state key="normal" title="Next Article"/>
-                                <connections>
-                                    <action selector="nextButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5w4-kB-oR6"/>
-                                </connections>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Word:" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-he-Frx">
-                                <rect key="frame" x="28" y="541" width="62" height="52"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="definition" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ET9-U4-XvM">
-                                <rect key="frame" x="105" y="541" width="230" height="52"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SBy-0u-43h" userLabel="WordLookup">
+                                <rect key="frame" x="16" y="569" width="343" height="36"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Word:" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-he-Frx">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="36"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="Rc9-ns-pqN"/>
+                                            <constraint firstAttribute="width" constant="64" id="vGf-MI-9hH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="definition" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ET9-U4-XvM">
+                                        <rect key="frame" x="64" y="0.0" width="279" height="36"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="PbR-vA-sLZ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="aRB-JH-L5x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="8eh-wC-5jr"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="aRB-JH-L5x" secondAttribute="bottom" constant="100" id="T3l-C3-bvC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" constant="16" id="UCY-Gg-5FI"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oiA-IS-80R" secondAttribute="bottom" constant="16" id="lT4-Ty-eAf"/>
-                            <constraint firstItem="aRB-JH-L5x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="rYU-yj-lnW"/>
-                            <constraint firstItem="oiA-IS-80R" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="x6B-TZ-dRz"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" constant="16" id="7Tq-7r-jTa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oiA-IS-80R" secondAttribute="bottom" constant="16" id="Ebh-gl-C7r"/>
+                            <constraint firstItem="SBy-0u-43h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="H0a-Ef-huP"/>
+                            <constraint firstItem="SBy-0u-43h" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" id="IzB-Co-X7J"/>
+                            <constraint firstItem="aRB-JH-L5x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="LMa-Iu-JU4"/>
+                            <constraint firstItem="aRB-JH-L5x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="b1N-90-p6d"/>
+                            <constraint firstItem="oiA-IS-80R" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ggF-hO-dfV"/>
+                            <constraint firstItem="SBy-0u-43h" firstAttribute="top" secondItem="aRB-JH-L5x" secondAttribute="bottom" constant="16" id="gxH-DG-LCd"/>
+                            <constraint firstItem="oiA-IS-80R" firstAttribute="top" secondItem="SBy-0u-43h" secondAttribute="bottom" constant="16" id="w2B-fu-LH0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="articleTextBox" destination="aRB-JH-L5x" id="CaJ-BX-G1K"/>
+                        <outlet property="definitionTextBox" destination="ET9-U4-XvM" id="NeI-3h-zAO"/>
+                        <outlet property="wordTextBox" destination="Cb1-he-Frx" id="Dk7-wM-xDE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
