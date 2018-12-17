@@ -131,20 +131,11 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     
     func nextInt(text:String)->String{
-        //get up to the first space, if there is one
-        var toRead = text
-        var result = ""
-        while (toRead.count > 0) {
-            if toRead.prefix(1) == ";"{
-                return result
-            }
-            result += toRead.prefix(1)
-            toRead = String(toRead.dropFirst())
+        if let index = text.firstIndex(of:";"){
+            let result = text.prefix(upTo: index)
+            return String(result)
         }
-        
-        return result
-        
-        
+        return ""
     }
     
     func getMainLable(tag:String)->String{
