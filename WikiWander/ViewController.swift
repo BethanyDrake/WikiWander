@@ -308,7 +308,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         
         
-        let url = URL(string: "https://zh.wikipedia.org/wiki/Special:Random")!
+        let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
