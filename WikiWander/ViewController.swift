@@ -26,23 +26,54 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    func doStuff (_ sender: UITapGestureRecognizer) throws {
+        let loc = sender.location(in: articleTextBox)
+        print("touch loc: ", loc)
+        
+        let i = articleTextBox.closestPosition(to: loc)
+        if let i = i {
+            print("A")
+            let realPos = articleTextBox.position(from: i, offset: -1) ?? articleTextBox.beginningOfDocument
+            print("B")
+            let range = articleTextBox.textRange(from: realPos, to: articleTextBox.endOfDocument)
+            print(" C")
+            if range === nil { return }
+            print("D")
+            let closestChar = articleTextBox.text(in:range!)
+            print("E")
+            print(closestChar ?? "no char found")
+            let location = (articleTextBox as UITextInput).offset(from: articleTextBox.beginningOfDocument, to: i)
+            print("F")
+            let nsRange = NSRange(location: location, length: 1)
+            print("G")
+            if let selectedRange = selectedRange{
+                articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
+            }
+            print("H")
+            if (nsRange.lowerBound < 0 || nsRange.upperBound > articleTextBox.text.count){
+                print ("out of bounds")
+                return
+            }
+            articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: nsRange)
+            print("I")
+            selectedRange = nsRange
+            print("J")
+        }
+    }
+    
+    
+    var selectedRange: NSRange!
     
     // function which is triggered when handleTap is called
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        let loc = sender.location(in: articleTextBox)
-        print("touch loc: ", loc)
-        let i:UITextPosition = articleTextBox.closestPosition(to: loc)!
-        let realPos:UITextPosition = articleTextBox.position(from: i, offset: -1)!
-        let range = articleTextBox.textRange(from: realPos, to: articleTextBox.endOfDocument)
-        let closestChar = articleTextBox.text(in:range!)
         
-        print(closestChar!)
+        do {
+            try doStuff(sender)
+        }
+        catch{
+            print(error)
+        }
         
-        let location = (articleTextBox as UITextInput).offset(from: articleTextBox.beginningOfDocument, to: i)
-        
-        let nsRange = NSRange(location: location, length: 1)
-        
-        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: nsRange)
         
     }
     
