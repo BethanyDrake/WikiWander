@@ -26,7 +26,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
-    func doStuff (_ sender: UITapGestureRecognizer) {
+    func selectCharacter (_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: articleTextBox)
         print("touch loc: ", loc)
         
@@ -74,10 +74,36 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     // function which is triggered when handleTap is called
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         
-        doStuff(sender)
+        selectCharacter(sender)
 
+        lookUpSelectedText()
         
         
+    }
+    
+    func lookUpSelectedText() {
+        print("looking up selected text")
+        let d = getDictionary()
+        print("dictionary has \(d) entries")
+        
+        var wordToLookUp:String? = nil
+        
+        if let selectedRange = selectedRange, let range = Range(selectedRange, in: articleTextBox.text){
+            if (selectedRange.lowerBound < 0 || selectedRange.upperBound > articleTextBox.text.count){
+                print ("old selected range out of bounds")
+            }else{
+                
+                wordToLookUp = String(articleTextBox.text[range])
+                print("word", wordToLookUp ?? "")
+            }
+        }
+        if let word = wordToLookUp, let value = dictionary[word] {
+            print(value)
+        }else{
+            print("no value found")
+        }
+        
+
     }
     
     
@@ -130,6 +156,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    var dictionary:[String:String] = [:]
+    
     func getDictionary()->Int {
         //at this point, just read the dictionary and return the number of entries.
         if let path = Bundle.main.path(forResource: "cc-cedict", ofType: "json") {
@@ -138,6 +166,36 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 let json = try? JSONSerialization.jsonObject(with: data, options: [])
                 
                 if let array = json as? [Any] {
+                    var count = 0
+                    for entry in array {
+                        if let entry = entry as? [String:Any]{
+                            if let key:String = entry["s"] as? String {
+                                if let values:[String] = entry["d"] as? [String]{
+                                    let value = values.first
+                                    dictionary[key] = value
+                                    if count < 10 {
+                                        print("added \(key), \(value)")
+                                        count += 1
+                                }
+                                
+                                
+                                }
+                            }else{
+                                if count < 10 {
+                                    print ("couldn't find the key 's'")
+                                    count += 1
+                                }
+                                
+                            }
+                        }else {
+                            if count < 10 {
+                                print ("couldn't convert to dictionary")
+                                count+=1
+                            }
+                            
+                        }
+                        
+                    }
                     return array.count
                 }
                 else {
