@@ -30,24 +30,24 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     func selectCharacter (_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: articleTextBox)
-        print("touch loc: ", loc)
+        //print("touch loc: ", loc)
         
         let i = articleTextBox.closestPosition(to: loc)
         if let i = i {
-            print("A")
+          //  print("A")
             let realPos = articleTextBox.position(from: i, offset: -1) ?? articleTextBox.beginningOfDocument
-            print("B")
+            //print("B")
             let range = articleTextBox.textRange(from: realPos, to: articleTextBox.endOfDocument)
-            print(" C")
+            //print(" C")
             if range === nil { return }
-            print("D")
-            let closestChar = articleTextBox.text(in:range!)
-            print("E")
-            print(closestChar ?? "no char found")
+            //print("D")
+           // let closestChar = articleTextBox.text(in:range!)
+            //print("E")
+            //print(closestChar ?? "no char found")
             let location = (articleTextBox as UITextInput).offset(from: articleTextBox.beginningOfDocument, to: i)
-            print("F")
+            //print("F")
             let nsRange = NSRange(location: location, length: 1)
-            print("G")
+            //print("G")
             if let selectedRange = selectedRange{
                 if (selectedRange.lowerBound < 0 || selectedRange.upperBound > articleTextBox.text.count){
                     
@@ -58,15 +58,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 
             }
             
-            print("H")
+            //print("H")
             if (nsRange.lowerBound < 0 || nsRange.upperBound > articleTextBox.text.count){
                 print ("out of bounds")
                 return
             }
             articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: nsRange)
-            print("I")
+           // print("I")
             selectedRange = nsRange
-            print("J")
+            //print("J")
         }
     }
     
@@ -75,10 +75,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     // function which is triggered when handleTap is called
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        let startTime = NSDate().timeIntervalSince1970
         
+        
+        print("A", NSDate().timeIntervalSince1970 - startTime)
         selectCharacter(sender)
-
+        print("B", NSDate().timeIntervalSince1970 - startTime)
         lookUpSelectedText()
+        print("C", NSDate().timeIntervalSince1970 - startTime)
         
         
     }
@@ -161,8 +165,11 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
     
     var dictionary:[String:String] = [:]
-    
+    var gotDictionary = false
     func getDictionary()->Int {
+        if gotDictionary {
+            return 0
+        }
         //at this point, just read the dictionary and return the number of entries.
         if let path = Bundle.main.path(forResource: "cc-cedict", ofType: "json") {
             do {
@@ -200,6 +207,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         }
                         
                     }
+                    gotDictionary = true
                     return array.count
                 }
                 else {
@@ -218,7 +226,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     func getArticalContent(text: String)->String {
         //first off, lets just get the <p>s. Then we can add headings.
-  
+        let startTime = NSDate().timeIntervalSince1970
+        print("starting to getArticalContent")
         var plainText = ""
         
         var toRead = text
@@ -241,15 +250,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         tags.removeLast()
                         if header == "p" {
                             plainText += "\n"
-                            print("para break")
+                            //print("para break")
                         }
                         if followWithBreak.contains(header){
                             plainText += "\n"
-                            print("add break for: " + header)
+                            //print("add break for: " + header)
                         }
                         
                     }
-                    print("dropped tag: " + closingTag + " (" + header + ")")
+                    //print("dropped tag: " + closingTag + " (" + header + ")")
                     //print(tags)
                 }
                 continue
@@ -266,7 +275,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         continue
                     }
                     tags.append(header)
-                    print("oppened tag: " + openingTag + " (" + header + ")")
+                    //print("oppened tag: " + openingTag + " (" + header + ")")
                     //print(tags)
                 }
                 continue
@@ -301,19 +310,25 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             toRead = String(toRead.dropFirst(1))
         }
         
+        print("done gettingArticalContent", NSDate().timeIntervalSince1970 - startTime)
+        
         return plainText
     }
 
+    
+    let longArticalUrl = URL(string: "https://zh.wikipedia.org/wiki/%E6%B3%A2%E5%85%B0%E8%AF%AD")!
     @IBAction func nextButton(_ sender: UIButton) {
         articleTextBox.text = "loading..."
+        let startTime = NSDate().timeIntervalSince1970
         
-        
-        let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
+        let url = longArticalUrl
+        //let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
             
             let text = String(data: data, encoding: .utf8)!
+            print("got Data", NSDate().timeIntervalSince1970 - startTime)
             
             let articalContent = self.getArticalContent(text: text)
             
@@ -322,8 +337,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             DispatchQueue.main.async {
                 self.articleTextBox.text = articalContent
             }
-            print(articalContent)
+            //print(articalContent)
             print("finished")
+            print("finished whole thing", NSDate().timeIntervalSince1970 - startTime)
         }
         
         task.resume()
