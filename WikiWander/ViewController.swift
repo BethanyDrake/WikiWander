@@ -12,8 +12,9 @@ import Foundation
 class ViewController: UIViewController, URLSessionTaskDelegate {
 
     @IBOutlet weak var articleTextBox: UITextView!
-    @IBOutlet weak var wordTextBox: UITextView!
-    @IBOutlet weak var definitionTextBox: UITextView!
+//    @IBOutlet weak var wordTextBox: UITextView!
+   
+    @IBOutlet weak var definitionTextBox: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,48 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
         self.view.addSubview(articleTextBox)
         
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.nextDefinition(_:)))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.previousDefinition(_:)))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.left
+    
+//
+        definitionTextBox.addGestureRecognizer(swipeRight)
+        definitionTextBox.addGestureRecognizer(swipeLeft)
+        
+//
+        definitionTextBox.isUserInteractionEnabled = true
+//
+        self.view.addSubview(definitionTextBox)
+        
     }
+    
+    // function which is triggered when handleTap is called
+    var currentDefinition = 0;
+    @objc func nextDefinition(_ sender: UISwipeGestureRecognizer) {
+        print("swiped right!", sender)
+        if definitions.count == 0 {
+            print("no more definitions")
+            return
+        }
+        currentDefinition = (currentDefinition + 1) % definitions.count
+        definitionTextBox.text = definitions[currentDefinition].definition
+        
+        
+    }
+    @objc func previousDefinition(_ sender: UISwipeGestureRecognizer) {
+        print("swiped left!", sender)
+        if definitions.count == 0 {
+            print("no more definitions")
+            return
+        }
+        currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
+        definitionTextBox.text = definitions[currentDefinition].definition
+        
+    }
+    
+    
     
     func selectCharacter (_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: articleTextBox)
@@ -87,6 +129,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    
     struct Definition {
         var word: String
         var pronounciation: String
@@ -146,7 +189,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
         
         if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
-            wordTextBox.text = word
+            //wordTextBox.text = word
             definitionTextBox.text = definitions.joined(separator: "\n")
             print(definitions)
         }else{

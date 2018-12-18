@@ -28,6 +28,9 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRB-JH-L5x">
                                 <rect key="frame" x="16" y="52" width="343" height="501"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="501" id="0n5-08-Wci"/>
+                                </constraints>
                                 <attributedString key="attributedText">
                                     <fragment>
                                         <string key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -39,49 +42,32 @@
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SBy-0u-43h" userLabel="WordLookup">
-                                <rect key="frame" x="16" y="569" width="343" height="36"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Word:" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-he-Frx">
-                                        <rect key="frame" x="0.0" y="0.0" width="64" height="36"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="36" id="Rc9-ns-pqN"/>
-                                            <constraint firstAttribute="width" constant="64" id="vGf-MI-9hH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="definition" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ET9-U4-XvM">
-                                        <rect key="frame" x="64" y="0.0" width="279" height="36"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="36" id="PbR-vA-sLZ"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                </subviews>
-                            </stackView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="definition" placeholder="definition" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JbQ-8e-bdo">
+                                <rect key="frame" x="16" y="561" width="343" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="C3u-ax-w6Z"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="JbQ-8e-bdo" firstAttribute="leading" secondItem="aRB-JH-L5x" secondAttribute="leading" id="1kq-k5-r6s"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" constant="16" id="7Tq-7r-jTa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oiA-IS-80R" secondAttribute="bottom" constant="16" id="Ebh-gl-C7r"/>
-                            <constraint firstItem="SBy-0u-43h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="H0a-Ef-huP"/>
-                            <constraint firstItem="SBy-0u-43h" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" id="IzB-Co-X7J"/>
                             <constraint firstItem="aRB-JH-L5x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="LMa-Iu-JU4"/>
-                            <constraint firstItem="aRB-JH-L5x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="b1N-90-p6d"/>
+                            <constraint firstItem="JbQ-8e-bdo" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" id="fTV-Fj-P3D"/>
                             <constraint firstItem="oiA-IS-80R" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ggF-hO-dfV"/>
-                            <constraint firstItem="SBy-0u-43h" firstAttribute="top" secondItem="aRB-JH-L5x" secondAttribute="bottom" constant="16" id="gxH-DG-LCd"/>
-                            <constraint firstItem="oiA-IS-80R" firstAttribute="top" secondItem="SBy-0u-43h" secondAttribute="bottom" constant="16" id="w2B-fu-LH0"/>
+                            <constraint firstItem="JbQ-8e-bdo" firstAttribute="top" secondItem="aRB-JH-L5x" secondAttribute="bottom" constant="8" symbolic="YES" id="jzE-3j-IFi"/>
+                            <constraint firstItem="aRB-JH-L5x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="ubb-Yf-B3i"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="articleTextBox" destination="aRB-JH-L5x" id="CaJ-BX-G1K"/>
-                        <outlet property="definitionTextBox" destination="ET9-U4-XvM" id="NeI-3h-zAO"/>
-                        <outlet property="wordTextBox" destination="Cb1-he-Frx" id="Dk7-wM-xDE"/>
+                        <outlet property="definitionTextBox" destination="JbQ-8e-bdo" id="4ho-Gp-1p4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
