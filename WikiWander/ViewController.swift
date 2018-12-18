@@ -87,6 +87,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    struct Definition {
+        var word: String
+        var pronounciation: String
+        var definition: String
+    }
+    
+    var definitions:[Definition] = []
+    
     func lookUpSelectedText() {
         print("looking up selected text")
         let d = getDictionary()
@@ -108,6 +116,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         
         
+        
+        
+        
         if var possibleWords = charToWords[touchedChar ?? " "], let touchedChar = touchedChar, let index = index{
             possibleWords = possibleWords.filter { (word) -> Bool in
                 let posOfCharInWord = word.firstIndex(of: touchedChar)!
@@ -118,11 +129,20 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 
                 return (textStart.hasSuffix(wordStart) && textEnd.hasPrefix(wordEnd))
             }
-            print(possibleWords)
+            print("possible words", possibleWords)
+            definitions = []
+            
+            for word in possibleWords{
+                if let definitionsForWord = wordToDefinitions[word]{
+                    for definition in definitionsForWord{
+                        definitions.append(Definition(word:word, pronounciation: "bah", definition:definition))
+                    }
+                }
+            }
+            print("Definitions:", definitions)
+            print("num Definitions:", definitions.count)
         }
-        
-        
-        
+    
         
         
         if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
