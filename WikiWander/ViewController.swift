@@ -249,10 +249,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         }
                         
                     }
-                    //print("dropped tag: " + closingTag + " (" + header + ")")
-                    //print(tags)
+                    
                 }
-                //print("loop end: A", NSDate().timeIntervalSince1970 - loopStart)
                 continue
             }
            if toRead.prefix(1) == "<" {
@@ -264,14 +262,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     let header = getMainLable(tag: openingTag)
                     toRead = String(toRead.dropFirst(openingTag.count + 1))
                     if openingTag.last == "/" {
-                        //print("loop end: B", NSDate().timeIntervalSince1970 - loopStart)
+                        
                         continue
                     }
                     tags.append(header)
-                    //print("oppened tag: " + openingTag + " (" + header + ")")
-                    //print(tags)
+                    
                 }
-                //print("loop end: C", NSDate().timeIntervalSince1970 - loopStart)
                 continue
                 
             }
@@ -294,19 +290,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                             //print("loop end: D", NSDate().timeIntervalSince1970 - loopStart)
                             continue
                         }
-                        
-                        //plainText += toRead.prefix(1)
                         let nextChunk = getToNextSpecialChar(text: toRead, specialChars: "<>&")
                         if (nextChunk.count < 1) {
                             plainText += toRead.prefix(1)
-                            //print("loop end: G", NSDate().timeIntervalSince1970 - loopStart)
                             toRead = String(toRead.dropFirst(1))
                             continue
                         }
                         plainText += nextChunk
                         toRead = String(toRead.dropFirst(nextChunk.count))
-                        //print("F size: ", nextChunk.count )
-                        //print("loop end: F", NSDate().timeIntervalSince1970 - loopStart)
                         continue
                         
                     }
@@ -336,8 +327,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         articleTextBox.text = "loading..."
         let startTime = NSDate().timeIntervalSince1970
         
-        let url = longArticalUrl
-        //let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
+        //let url = longArticalUrl
+        let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
