@@ -93,20 +93,42 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         print("dictionary has \(d) entries")
         
         var wordToLookUp:String? = nil
-        
+        var index:String.Index? = nil
+        var touchedChar:Character? = nil
         if let selectedRange = selectedRange, let range = Range(selectedRange, in: articleTextBox.text){
             if (selectedRange.lowerBound < 0 || selectedRange.upperBound > articleTextBox.text.count){
                 print ("old selected range out of bounds")
             }else{
                 
+                index = range.lowerBound
+                touchedChar = articleTextBox.text[index!]
                 wordToLookUp = String(articleTextBox.text[range])
                 print("word", wordToLookUp ?? "")
             }
         }
-        if let word = wordToLookUp, let value = dictionary[word] {
+        
+        
+        if var possibleWords = charToWords[touchedChar ?? " "], let touchedChar = touchedChar, let index = index{
+            possibleWords = possibleWords.filter { (word) -> Bool in
+                let posOfCharInWord = word.firstIndex(of: touchedChar)!
+                let textStart = articleTextBox.text.prefix(upTo: index)
+                let textEnd = articleTextBox.text.suffix(from: index)
+                let wordStart = word.prefix(upTo: posOfCharInWord)
+                let wordEnd = word.suffix(from: posOfCharInWord)
+                
+                return (textStart.hasSuffix(wordStart) && textEnd.hasPrefix(wordEnd))
+            }
+            print(possibleWords)
+        }
+        
+        
+        
+        
+        
+        if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
             wordTextBox.text = word
-            definitionTextBox.text = value
-            print(value)
+            definitionTextBox.text = definitions.joined(separator: "\n")
+            print(definitions)
         }else{
             print("no value found")
         }
@@ -155,6 +177,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
     
     var dictionary:[String:String] = [:]
+    var charToWords:[Character:[String]] = [:]
+    var wordToDefinitions:[String:[String]] = [:]
+    var wordToPronunciation:[String:String] = [:]
     var gotDictionary = false
     func getDictionary()->Int {
         if gotDictionary {
@@ -170,12 +195,18 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     var count = 0
                     for entry in array {
                         if let entry = entry as? [String:Any]{
-                            if let key:String = entry["s"] as? String {
+                            if let word:String = entry["s"] as? String {
+                                //for each character in that word, add it
+                                for c in word {
+                                    charToWords[c] = (charToWords[c] ?? []) + [word]
+                                    
+                                }
                                 if let values:[String] = entry["d"] as? [String]{
                                     let value = values.first
-                                    dictionary[key] = value
+                                    dictionary[word] = value
+                                    wordToDefinitions[word] = values
                                     if count < 10 {
-                                        print("added \(key), \(value)")
+                                        print(wordToDefinitions)
                                         count += 1
                                 }
                                 
