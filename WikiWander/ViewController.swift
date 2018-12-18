@@ -145,6 +145,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         return tag
     }
+    func getToNextSpecialChar(text:String, specialChars:String)->String.SubSequence{
+        
+        var i = text.startIndex
+        while (i < text.endIndex && !specialChars.contains(text[i])) {
+            i = text.index(after: i)
+        }
+        return text.prefix(upTo: i)
+    }
     
     var dictionary:[String:String] = [:]
     var gotDictionary = false
@@ -219,6 +227,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         let followWithBreak = ["h1", "h2"]
         
         while (toRead.count > 0) {
+            //let loopStart = NSDate().timeIntervalSince1970
             if toRead.prefix(2) == "</" {
                 //then we gotta see if we can close the last open tag
                 toRead = String(toRead.dropFirst(2))
@@ -243,6 +252,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     //print("dropped tag: " + closingTag + " (" + header + ")")
                     //print(tags)
                 }
+                //print("loop end: A", NSDate().timeIntervalSince1970 - loopStart)
                 continue
             }
            if toRead.prefix(1) == "<" {
@@ -254,12 +264,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     let header = getMainLable(tag: openingTag)
                     toRead = String(toRead.dropFirst(openingTag.count + 1))
                     if openingTag.last == "/" {
+                        //print("loop end: B", NSDate().timeIntervalSince1970 - loopStart)
                         continue
                     }
                     tags.append(header)
                     //print("oppened tag: " + openingTag + " (" + header + ")")
                     //print(tags)
                 }
+                //print("loop end: C", NSDate().timeIntervalSince1970 - loopStart)
                 continue
                 
             }
@@ -279,9 +291,23 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                             if let actualChar = decodeNumeric(string: nextIntString, base: 10) {
                                 plainText += String(actualChar)
                             }
+                            //print("loop end: D", NSDate().timeIntervalSince1970 - loopStart)
                             continue
                         }
-                        plainText += toRead.prefix(1)
+                        
+                        //plainText += toRead.prefix(1)
+                        let nextChunk = getToNextSpecialChar(text: toRead, specialChars: "<>&")
+                        if (nextChunk.count < 1) {
+                            plainText += toRead.prefix(1)
+                            //print("loop end: G", NSDate().timeIntervalSince1970 - loopStart)
+                            toRead = String(toRead.dropFirst(1))
+                            continue
+                        }
+                        plainText += nextChunk
+                        toRead = String(toRead.dropFirst(nextChunk.count))
+                        //print("F size: ", nextChunk.count )
+                        //print("loop end: F", NSDate().timeIntervalSince1970 - loopStart)
+                        continue
                         
                     }
                 }
@@ -289,7 +315,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 
             }
             
-            toRead = String(toRead.dropFirst(1))
+            let nextChunk = getToNextSpecialChar(text: toRead, specialChars: "<>&")
+            if (nextChunk.count < 1) {
+                //print("loop end: H", NSDate().timeIntervalSince1970 - loopStart)
+                toRead = String(toRead.dropFirst(1))
+                continue
+            }
+            toRead = String(toRead.dropFirst(nextChunk.count))
+            //print("loop end: E", NSDate().timeIntervalSince1970 - loopStart)
         }
         
         print("done gettingArticalContent", NSDate().timeIntervalSince1970 - startTime)
