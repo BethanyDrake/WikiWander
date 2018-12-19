@@ -134,16 +134,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     // function which is triggered when handleTap is called
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        let startTime = NSDate().timeIntervalSince1970
-        
-        
-        print("A", NSDate().timeIntervalSince1970 - startTime)
         selectCharacter(sender)
-        print("B", NSDate().timeIntervalSince1970 - startTime)
         lookUpSelectedText()
-        print("C", NSDate().timeIntervalSince1970 - startTime)
-        
-        
     }
     
     
@@ -152,14 +144,38 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         var pronounciation: String
         var definition: String
         var startIndex: String.Index
+        
+        static func ==(lhs: Definition, rhs: Definition) -> Bool {
+            return (
+                lhs.word == rhs.word &&
+                lhs.pronounciation == rhs.pronounciation &&
+                lhs.definition == rhs.definition)
+        }
     }
     
     var definitions:[Definition] = []
     
+    fileprivate func unique(array: [Definition]) -> [Definition] {
+        var uniqueItems:[Definition] = []
+        for item in array {
+            var unique = true
+            for u in uniqueItems {
+                if u == item {
+                    unique = false
+                    break
+                }
+            }
+            if unique
+            {
+                uniqueItems.append(item)
+            }
+        }
+        return uniqueItems
+    }
+    
     func lookUpSelectedText() {
-        print("looking up selected text")
-        let d = getDictionary()
-        print("dictionary has \(d) entries")
+        getDictionary()
+
         
         var wordToLookUp:String? = nil
         var index:String.Index? = nil
@@ -175,10 +191,6 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 print("word", wordToLookUp ?? "")
             }
         }
-        
-        
-        
-        
         
         if var possibleWords = charToWords[touchedChar ?? " "], let touchedChar = touchedChar, let index = index{
             possibleWords = possibleWords.filter { (word) -> Bool in
@@ -206,13 +218,17 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                     }
                 }
             }
-            print("Definitions:", definitions)
             print("num Definitions:", definitions.count)
         }
         
-
         definitions.sort(by: {$0.word.count > $1.word.count})
       
+        print("num before remove dupes", definitions.count)
+        
+        definitions = unique(array: definitions)
+        
+        //definitions = Array(NSOrderedSet(array: definitions)) as! [ViewController.Definition]
+        print("num after remove dupes", definitions.count)
         
         if definitions.count > 0 {
             currentDefinition = 0
@@ -220,17 +236,6 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             updateDefinition()
             
         }
-        
-        
-//        if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
-//            //wordTextBox.text = word
-//            definitionTextBox.text = definitions.joined(separator: "\n")
-//            print(definitions)
-//        }else{
-//            print("no value found")
-//        }
-        
-
     }
     
     
@@ -245,9 +250,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             return Character(c)
         }
         return "~"
-        
     }
-    
     
     func nextInt(text:String)->String{
         if let index = text.firstIndex(of:";"){
@@ -278,9 +281,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     var wordToDefinitions:[String:[String]] = [:]
     var wordToPronunciation:[String:String] = [:]
     var gotDictionary = false
-    func getDictionary()->Int {
+    func getDictionary()->Void {
         if gotDictionary {
-            return 0
+            return
         }
         //at this point, just read the dictionary and return the number of entries.
         if let path = Bundle.main.path(forResource: "cc-cedict", ofType: "json") {
@@ -327,19 +330,19 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         
                     }
                     gotDictionary = true
-                    return array.count
+                    return
                 }
                 else {
-                    return 0
+                    return
                 }
                 
                 
             } catch {
-                return 0
+                return
             }
             
         }
-        return 0
+        return
     }
     
     
