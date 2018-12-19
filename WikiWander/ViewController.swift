@@ -62,8 +62,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
 
     
-    // function which is triggered when handleTap is called
     var currentDefinition = 0;
+    fileprivate func updateDefinition() {
+        print("updating definition")
+        definitionTextBox.text = definitions[currentDefinition].definition
+        characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
+        selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+    }
+    
     @objc func nextDefinition(_ sender: UISwipeGestureRecognizer) {
         print("swiped right!", sender)
         if definitions.count == 0 {
@@ -71,9 +77,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             return
         }
         currentDefinition = (currentDefinition + 1) % definitions.count
-        definitionTextBox.text = definitions[currentDefinition].definition
-        characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
-        selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+        updateDefinition()
         
         
     }
@@ -84,43 +88,29 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             return
         }
         currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
-        definitionTextBox.text = definitions[currentDefinition].definition
-        characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
-        selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+        updateDefinition()
         
         
     }
     
     
     func selectRange(newRange: NSRange){
+        print("updating selected range", newRange)
         articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
         articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: newRange)
         selectedRange = newRange
-        print("selecting new range!", newRange)
-        
     }
     
     
     func selectCharacter (_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: articleTextBox)
-        //print("touch loc: ", loc)
-        
         let i = articleTextBox.closestPosition(to: loc)
         if let i = i {
-          //  print("A")
             let realPos = articleTextBox.position(from: i, offset: -1) ?? articleTextBox.beginningOfDocument
-            //print("B")
             let range = articleTextBox.textRange(from: realPos, to: articleTextBox.endOfDocument)
-            //print(" C")
             if range === nil { return }
-            //print("D")
-           // let closestChar = articleTextBox.text(in:range!)
-            //print("E")
-            //print(closestChar ?? "no char found")
             let location = (articleTextBox as UITextInput).offset(from: articleTextBox.beginningOfDocument, to: i)
-            //print("F")
             let nsRange = NSRange(location: location, length: 1)
-            //print("G")
             if let selectedRange = selectedRange{
                 if (selectedRange.lowerBound < 0 || selectedRange.upperBound > articleTextBox.text.count){
                     
@@ -128,18 +118,14 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                 }else{
                    articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
                 }
-                
             }
             
-            //print("H")
             if (nsRange.lowerBound < 0 || nsRange.upperBound > articleTextBox.text.count){
                 print ("out of bounds")
                 return
             }
             articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: nsRange)
-           // print("I")
             selectedRange = nsRange
-            //print("J")
         }
     }
     
@@ -231,8 +217,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         if definitions.count > 0 {
             currentDefinition = 0
             definitionTextBox.text = definitions[currentDefinition].definition
-            characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
-            selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+            updateDefinition()
             
         }
         
