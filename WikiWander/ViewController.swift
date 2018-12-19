@@ -41,8 +41,21 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         definitionTextBox.isUserInteractionEnabled = true
 //
         self.view.addSubview(definitionTextBox)
+        definitionTextBox.delegate = plainTextFieldDelegate
         
     }
+    
+    let plainTextFieldDelegate = PlainTextFieldDelegate()
+    
+    class PlainTextFieldDelegate : UIViewController, UITextFieldDelegate {
+        func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool{
+            return false
+        }
+        
+    }
+    
+    
+
     
     // function which is triggered when handleTap is called
     var currentDefinition = 0;

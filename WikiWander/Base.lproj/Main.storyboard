@@ -42,10 +42,36 @@
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4dX-Hu-mub">
+                                <rect key="frame" x="16" y="561" width="50" height="60"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="例如" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Iy7-CA-1ik">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="30"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" notEnabled="YES"/>
+                                        </accessibility>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="lìrú" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Onc-HM-nvx">
+                                        <rect key="frame" x="0.0" y="30" width="50" height="30"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" notEnabled="YES"/>
+                                        </accessibility>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="definition" placeholder="definition" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JbQ-8e-bdo">
-                                <rect key="frame" x="16" y="561" width="343" height="30"/>
+                                <rect key="frame" x="74" y="561" width="285" height="60"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="C3u-ax-w6Z"/>
+                                    <constraint firstAttribute="height" constant="60" id="C3u-ax-w6Z"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -54,13 +80,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="JbQ-8e-bdo" firstAttribute="leading" secondItem="aRB-JH-L5x" secondAttribute="leading" id="1kq-k5-r6s"/>
+                            <constraint firstItem="4dX-Hu-mub" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="227-bh-PEh"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" constant="16" id="7Tq-7r-jTa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oiA-IS-80R" secondAttribute="bottom" constant="16" id="Ebh-gl-C7r"/>
+                            <constraint firstItem="4dX-Hu-mub" firstAttribute="top" secondItem="JbQ-8e-bdo" secondAttribute="top" id="Ki0-Xe-JvE"/>
                             <constraint firstItem="aRB-JH-L5x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="LMa-Iu-JU4"/>
                             <constraint firstItem="JbQ-8e-bdo" firstAttribute="trailing" secondItem="aRB-JH-L5x" secondAttribute="trailing" id="fTV-Fj-P3D"/>
                             <constraint firstItem="oiA-IS-80R" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ggF-hO-dfV"/>
                             <constraint firstItem="JbQ-8e-bdo" firstAttribute="top" secondItem="aRB-JH-L5x" secondAttribute="bottom" constant="8" symbolic="YES" id="jzE-3j-IFi"/>
+                            <constraint firstItem="JbQ-8e-bdo" firstAttribute="leading" secondItem="4dX-Hu-mub" secondAttribute="trailing" constant="8" symbolic="YES" id="oGi-TV-9Eb"/>
                             <constraint firstItem="aRB-JH-L5x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="ubb-Yf-B3i"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
