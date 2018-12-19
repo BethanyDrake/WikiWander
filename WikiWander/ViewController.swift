@@ -16,7 +16,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
    
     @IBOutlet weak var definitionTextBox: UITextField!
     @IBOutlet weak var characterTextBox: UITextField!
-    @IBOutlet weak var pronounciationTextBox: UITextField!
+    
+    let TAB = "    "
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +46,6 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         self.view.addSubview(definitionTextBox)
         definitionTextBox.delegate = plainTextFieldDelegate
         characterTextBox.delegate = plainTextFieldDelegate
-        pronounciationTextBox.delegate = plainTextFieldDelegate
         
         
     }
@@ -72,8 +72,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         currentDefinition = (currentDefinition + 1) % definitions.count
         definitionTextBox.text = definitions[currentDefinition].definition
-        characterTextBox.text = definitions[currentDefinition].word
-        pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+        characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
         selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
         
         
@@ -86,8 +85,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
         definitionTextBox.text = definitions[currentDefinition].definition
-        characterTextBox.text = definitions[currentDefinition].word
-        pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+        characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
         selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
         
         
@@ -218,7 +216,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         
                         let posOfWordInChar = textStart.index(index, offsetBy: -1 * wordStart.count)
                             //textStart.prefix(textStart.count-wordStart.count).endIndex
-                        definitions.append(Definition(word:word, pronounciation: "bah", definition:definition, startIndex: posOfWordInChar))
+                        definitions.append(Definition(word:word, pronounciation: wordToPronunciation[word] ?? "", definition:definition, startIndex: posOfWordInChar))
                     }
                 }
             }
@@ -226,13 +224,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             print("num Definitions:", definitions.count)
         }
         
-        definitions = definitions.sorted(by: {$0.word.count < $1.word.count})
+        definitions = definitions.sorted(by: {$0.word.count > $1.word.count})
     
         if definitions.count > 0 {
             currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
             definitionTextBox.text = definitions[currentDefinition].definition
-            characterTextBox.text = definitions[currentDefinition].word
-            pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+            characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
             selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
             
         }
@@ -314,10 +311,11 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                                     charToWords[c] = (charToWords[c] ?? []) + [word]
                                     
                                 }
-                                if let values:[String] = entry["d"] as? [String]{
+                                if let values:[String] = entry["d"] as? [String], let pronounciation:String = entry["p"] as? String{
                                     let value = values.first
                                     dictionary[word] = value
                                     wordToDefinitions[word] = values
+                                    wordToPronunciation[word] = pronounciation
                                     if count < 10 {
                                         print(wordToDefinitions)
                                         count += 1
