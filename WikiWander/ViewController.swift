@@ -224,10 +224,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             print("num Definitions:", definitions.count)
         }
         
-        definitions = definitions.sorted(by: {$0.word.count > $1.word.count})
-    
+
+        definitions.sort(by: {$0.word.count > $1.word.count})
+      
+        
         if definitions.count > 0 {
-            currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
+            currentDefinition = 0
             definitionTextBox.text = definitions[currentDefinition].definition
             characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
             selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
