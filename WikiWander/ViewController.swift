@@ -481,10 +481,6 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         
         task.resume()
-        
-        
-    
     }
     
 }
-
