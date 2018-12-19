@@ -15,6 +15,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
 //    @IBOutlet weak var wordTextBox: UITextView!
    
     @IBOutlet weak var definitionTextBox: UITextField!
+    @IBOutlet weak var characterTextBox: UITextField!
+    @IBOutlet weak var pronounciationTextBox: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
 //
         self.view.addSubview(definitionTextBox)
         definitionTextBox.delegate = plainTextFieldDelegate
+        characterTextBox.delegate = plainTextFieldDelegate
+        pronounciationTextBox.delegate = plainTextFieldDelegate
+        
         
     }
     
@@ -67,6 +72,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         currentDefinition = (currentDefinition + 1) % definitions.count
         definitionTextBox.text = definitions[currentDefinition].definition
+        characterTextBox.text = definitions[currentDefinition].word
+        pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+        selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
         
         
     }
@@ -78,9 +86,21 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
         definitionTextBox.text = definitions[currentDefinition].definition
+        characterTextBox.text = definitions[currentDefinition].word
+        pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+        selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+        
         
     }
     
+    
+    func selectRange(newRange: NSRange){
+        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.white, range: selectedRange)
+        articleTextBox.textStorage.addAttribute(.backgroundColor, value: UIColor.lightGray, range: newRange)
+        selectedRange = newRange
+        print("selecting new range!", newRange)
+        
+    }
     
     
     func selectCharacter (_ sender: UITapGestureRecognizer) {
@@ -147,6 +167,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         var word: String
         var pronounciation: String
         var definition: String
+        var startIndex: String.Index
     }
     
     var definitions:[Definition] = []
@@ -191,23 +212,39 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             for word in possibleWords{
                 if let definitionsForWord = wordToDefinitions[word]{
                     for definition in definitionsForWord{
-                        definitions.append(Definition(word:word, pronounciation: "bah", definition:definition))
+                        let posOfCharInWord = word.firstIndex(of: touchedChar)!
+                        let textStart = articleTextBox.text.prefix(upTo: index)
+                        let wordStart = word.prefix(upTo: posOfCharInWord)
+                        
+                        let posOfWordInChar = textStart.index(index, offsetBy: -1 * wordStart.count)
+                            //textStart.prefix(textStart.count-wordStart.count).endIndex
+                        definitions.append(Definition(word:word, pronounciation: "bah", definition:definition, startIndex: posOfWordInChar))
                     }
                 }
             }
             print("Definitions:", definitions)
             print("num Definitions:", definitions.count)
         }
+        
+        definitions = definitions.sorted(by: {$0.word.count < $1.word.count})
     
-        
-        
-        if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
-            //wordTextBox.text = word
-            definitionTextBox.text = definitions.joined(separator: "\n")
-            print(definitions)
-        }else{
-            print("no value found")
+        if definitions.count > 0 {
+            currentDefinition = (currentDefinition - 1 + definitions.count) % definitions.count
+            definitionTextBox.text = definitions[currentDefinition].definition
+            characterTextBox.text = definitions[currentDefinition].word
+            pronounciationTextBox.text = definitions[currentDefinition].pronounciation
+            selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+            
         }
+        
+        
+//        if let word = wordToLookUp, let definitions = wordToDefinitions[word] {
+//            //wordTextBox.text = word
+//            definitionTextBox.text = definitions.joined(separator: "\n")
+//            print(definitions)
+//        }else{
+//            print("no value found")
+//        }
         
 
     }
