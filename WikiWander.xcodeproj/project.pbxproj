@@ -15,6 +15,8 @@
 		52C64F4421C1E87C009EB190 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C64F4321C1E87C009EB190 /* Assets.xcassets */; };
 		52C64F4721C1E87C009EB190 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C64F4521C1E87C009EB190 /* LaunchScreen.storyboard */; };
 		52C64F5221C1E87C009EB190 /* WikiWanderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C64F5121C1E87C009EB190 /* WikiWanderTests.swift */; };
+		52D65CDF21CB038400F22304 /* KnownWordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D65CDE21CB038400F22304 /* KnownWordTableViewCell.swift */; };
+		52D65CE121CB128400F22304 /* WordListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D65CE021CB128400F22304 /* WordListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,8 @@
 		52C64F4D21C1E87C009EB190 /* WikiWanderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WikiWanderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C64F5121C1E87C009EB190 /* WikiWanderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiWanderTests.swift; sourceTree = "<group>"; };
 		52C64F5321C1E87C009EB190 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52D65CDE21CB038400F22304 /* KnownWordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownWordTableViewCell.swift; sourceTree = "<group>"; };
+		52D65CE021CB128400F22304 /* WordListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,9 +88,11 @@
 				52C64F3C21C1E87B009EB190 /* AppDelegate.swift */,
 				52C64F3E21C1E87B009EB190 /* ViewController.swift */,
 				52C64F4021C1E87B009EB190 /* Main.storyboard */,
+				52D65CDE21CB038400F22304 /* KnownWordTableViewCell.swift */,
 				52C64F4321C1E87C009EB190 /* Assets.xcassets */,
 				52C64F4521C1E87C009EB190 /* LaunchScreen.storyboard */,
 				52C64F4821C1E87C009EB190 /* Info.plist */,
+				52D65CE021CB128400F22304 /* WordListTableViewController.swift */,
 			);
 			path = WikiWander;
 			sourceTree = "<group>";
@@ -202,9 +208,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52D65CE121CB128400F22304 /* WordListTableViewController.swift in Sources */,
 				5223E3DF21C378C300AABA99 /* cc-cedict.json in Sources */,
 				52C64F3F21C1E87B009EB190 /* ViewController.swift in Sources */,
 				52C64F3D21C1E87B009EB190 /* AppDelegate.swift in Sources */,
+				52D65CDF21CB038400F22304 /* KnownWordTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
