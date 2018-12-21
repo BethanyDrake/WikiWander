@@ -9,10 +9,17 @@
 import UIKit
 
 class WordListTableViewController: UITableViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleWords()
+        //clearKnownWords()
+        if let savedKnownWords = loadKnownWords() {
+            knownWords += savedKnownWords
+            //knownWords += [KnownWord(word:"語種", pronounciation:"bah", definition: "brought those back after saving!")]
+        }else{
+            loadSampleWords()
+        }
+        saveKnownWords()
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -20,23 +27,29 @@ class WordListTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func clearKnownWords(){
+        knownWords = []
+        saveKnownWords()
+    }
 
     // MARK: - Table view data source
 
     
-    struct KnownWord {
-        var word:String
-        var pronounciation:String
-        //var tapCount = 1
-        //var familiarty = 0
-        var definition:String
-    }
     
     var knownWords = [KnownWord]()
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    private func saveKnownWords() {
+        print("saving known words...")
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(knownWords, toFile: KnownWord.ArchiveURL.path)
+        print("saved =", isSuccessfulSave)
+    }
+    private func loadKnownWords() -> [KnownWord]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: KnownWord.ArchiveURL.path) as? [KnownWord]
+    }
     func loadSampleWords() {
         knownWords += [KnownWord(word:"語種", pronounciation:"bah", definition: "who knows?")]
         knownWords += [KnownWord(word:"語種ii", pronounciation:"bahjjjjj", definition: "who knjjjjjows?")]

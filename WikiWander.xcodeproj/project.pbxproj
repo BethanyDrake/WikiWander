@@ -17,6 +17,7 @@
 		52C64F5221C1E87C009EB190 /* WikiWanderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C64F5121C1E87C009EB190 /* WikiWanderTests.swift */; };
 		52D65CDF21CB038400F22304 /* KnownWordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D65CDE21CB038400F22304 /* KnownWordTableViewCell.swift */; };
 		52D65CE121CB128400F22304 /* WordListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D65CE021CB128400F22304 /* WordListTableViewController.swift */; };
+		52D65CE321CB3D5F00F22304 /* KnownWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D65CE221CB3D5F00F22304 /* KnownWord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		52C64F5321C1E87C009EB190 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52D65CDE21CB038400F22304 /* KnownWordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownWordTableViewCell.swift; sourceTree = "<group>"; };
 		52D65CE021CB128400F22304 /* WordListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListTableViewController.swift; sourceTree = "<group>"; };
+		52D65CE221CB3D5F00F22304 /* KnownWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownWord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				52C64F4521C1E87C009EB190 /* LaunchScreen.storyboard */,
 				52C64F4821C1E87C009EB190 /* Info.plist */,
 				52D65CE021CB128400F22304 /* WordListTableViewController.swift */,
+				52D65CE221CB3D5F00F22304 /* KnownWord.swift */,
 			);
 			path = WikiWander;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				52C64F3F21C1E87B009EB190 /* ViewController.swift in Sources */,
 				52C64F3D21C1E87B009EB190 /* AppDelegate.swift in Sources */,
 				52D65CDF21CB038400F22304 /* KnownWordTableViewCell.swift in Sources */,
+				52D65CE321CB3D5F00F22304 /* KnownWord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -47,6 +47,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         definitionTextBox.delegate = plainTextFieldDelegate
         characterTextBox.delegate = plainTextFieldDelegate
         
+        knownWords = loadKnownWords() ?? []
         
     }
     
@@ -65,9 +66,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     var currentDefinition = 0;
     fileprivate func updateDefinition() {
         print("updating definition")
+        let newDefinition = definitions[currentDefinition]
         definitionTextBox.text = definitions[currentDefinition].definition
         characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
         selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
+        knownWords += [KnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)]
+        saveKnownWords()
     }
     
     @objc func nextDefinition(_ sender: UISwipeGestureRecognizer) {
@@ -214,7 +218,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
                         
                         let posOfWordInChar = textStart.index(index, offsetBy: -1 * wordStart.count)
                             //textStart.prefix(textStart.count-wordStart.count).endIndex
-                        definitions.append(Definition(word:word, pronounciation: wordToPronunciation[word] ?? "", definition:definition, startIndex: posOfWordInChar))
+                        let newDefinition = Definition(word:word, pronounciation: wordToPronunciation[word] ?? "", definition:definition, startIndex: posOfWordInChar)
+                        definitions.append(newDefinition)
+                        
                     }
                 }
             }
@@ -481,6 +487,23 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         }
         
         task.resume()
+    }
+    
+    
+    var knownWords = [KnownWord]()
+    
+    private func addToKnowWords(word:String){
+        knownWords += [KnownWord(word: word, pronounciation: "wooo!", definition: "hey!")]
+        
+    }
+    
+    private func saveKnownWords() {
+        print("saving known words...")
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(knownWords, toFile: KnownWord.ArchiveURL.path)
+        print("saved =", isSuccessfulSave)
+    }
+    private func loadKnownWords() -> [KnownWord]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: KnownWord.ArchiveURL.path) as? [KnownWord]
     }
     
 }
