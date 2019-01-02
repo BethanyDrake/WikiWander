@@ -14,11 +14,24 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var articleTextBox: UITextView!
 //    @IBOutlet weak var wordTextBox: UITextView!
    
+    @IBOutlet weak var colorIndicator: UIButton!
     @IBOutlet weak var definitionTextBox: UITextField!
     @IBOutlet weak var characterTextBox: UITextField!
     @IBAction func colorButton(_ sender: UIButton) {
-        print("button clicked!") 
+        print("button clicked!")
+        let currWord = knownWordsDictionary[definitions[currentDefinition].word]
+        currWord?.familiarity = (currWord!.familiarity + 1)%3
+        colorIndicator.backgroundColor =  familiarityToColor[currWord?.familiarity ?? -1]
+        
+     
     }
+    
+    let familiarityToColor:[Int:UIColor] = [
+        -1:UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0),
+        0:UIColor(red: 255/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0),
+        1:UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0),
+        2:UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
+    ]
     
     let TAB = "    "
     
@@ -108,6 +121,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
 
     
+
+    
     var currentDefinition = 0;
     fileprivate func updateDefinition() {
         print("updating definition")
@@ -116,6 +131,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
         selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
         addOrUpdateKnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)
+        let currWord = knownWordsDictionary[definitions[currentDefinition].word]
+        colorIndicator.backgroundColor =  familiarityToColor[currWord?.familiarity ?? -1]
 //        knownWords += [KnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)]
         saveKnownWords()
     }

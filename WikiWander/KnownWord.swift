@@ -15,6 +15,8 @@ class KnownWord: NSObject, NSCoding{
         aCoder.encode(definition, forKey: "definition")
         aCoder.encode(timesSeen, forKey: "timesSeen")
         aCoder.encode(lastSeenTime, forKey: "lastSeenTime")
+        aCoder.encode(familiarity, forKey: "familiarity")
+        
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -23,7 +25,8 @@ class KnownWord: NSObject, NSCoding{
         let definition = aDecoder.decodeObject(forKey: "definition") as! String
         let timesSeen = aDecoder.decodeInteger(forKey: "timesSeen")
         let lastSeenTime = aDecoder.decodeDouble(forKey: "lastSeenTime") as TimeInterval
-        self.init(word: word, pronounciation: pronounciation, definition: definition, timesSeen:timesSeen, lastSeenTime:lastSeenTime)
+        let familiarity = aDecoder.decodeInteger(forKey: "familiarity")
+        self.init(word: word, pronounciation: pronounciation, definition: definition, timesSeen:timesSeen, lastSeenTime:lastSeenTime, familiarity:familiarity)
     
     }
     
@@ -37,16 +40,17 @@ class KnownWord: NSObject, NSCoding{
     var definition:String
     var timesSeen:Int
     var lastSeenTime:TimeInterval
+    var familiarity:Int
 
     
-    init(word: String, pronounciation:String, definition:String, timesSeen:Int = 1, lastSeenTime:TimeInterval? = nil) {
+    init(word: String, pronounciation:String, definition:String, timesSeen:Int = 1, lastSeenTime:TimeInterval? = nil, familiarity:Int = 0) {
         print("initialising! time last seen = ", lastSeenTime ?? -2)
         self.word = word
         self.pronounciation = pronounciation
         self.definition = definition
         self.timesSeen = timesSeen
-        
         self.lastSeenTime = lastSeenTime ?? Date().timeIntervalSince1970
+        self.familiarity = familiarity
         
         
     }

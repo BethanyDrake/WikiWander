@@ -157,6 +157,7 @@
                     <connections>
                         <outlet property="articleTextBox" destination="aRB-JH-L5x" id="CaJ-BX-G1K"/>
                         <outlet property="characterTextBox" destination="Iy7-CA-1ik" id="mEU-2l-gmr"/>
+                        <outlet property="colorIndicator" destination="Jrw-s3-rQz" id="T6X-K7-CP9"/>
                         <outlet property="definitionTextBox" destination="JbQ-8e-bdo" id="4ho-Gp-1p4"/>
                     </connections>
                 </viewController>
