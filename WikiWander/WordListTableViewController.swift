@@ -9,6 +9,25 @@
 import UIKit
 
 class WordListTableViewController: UITableViewController {
+   
+    
+    
+    
+    @IBAction func exportCards(_ sender: UIButton) {
+        print("exporting!")
+        print(getCSV())
+    }
+    
+    
+    
+    func getCSV()->String {
+        var csv = ""
+        for word in knownWords {
+            csv += word.word + "," + word.pronounciation + "," + word.definition + "," + "\n"
+        }
+        return csv
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //clearKnownWords()
@@ -60,6 +79,15 @@ class WordListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return knownWords.count
     }
+    
+    func formatTime(duration: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
+        formatter.unitsStyle = .abbreviated
+        formatter.maximumUnitCount = 1
+        
+        return formatter.string(from: duration)!
+    }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,9 +104,14 @@ class WordListTableViewController: UITableViewController {
         
          print("CCCCCCCC")
         let knownWord = knownWords[indexPath.row]
+        
+        
+        
+        
         cell.charsLabel.text =  knownWord.word + "\t" +
                                 knownWord.pronounciation + "\t" +
-                                String(knownWord.timesSeen)
+                                String(knownWord.timesSeen) + "\t" +
+            formatTime(duration: knownWord.lastSeenTime.distance(to: Date().timeIntervalSince1970))
         cell.definitionTextBox.text = knownWord.definition
         //cell.pinyinLabel.text = knownWord.pronounciation
 

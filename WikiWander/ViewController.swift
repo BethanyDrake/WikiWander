@@ -49,8 +49,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         self.view.addSubview(definitionTextBox)
         definitionTextBox.delegate = plainTextFieldDelegate
         characterTextBox.delegate = plainTextFieldDelegate
-        knownWords = []
-        //knownWords = loadKnownWords() ?? []
+        //knownWords = []
+        knownWords = loadKnownWords() ?? []
         knownWordsDictionary = convertKnownwordsToDictionary(words:knownWords)
         
     }
@@ -93,6 +93,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             print ("updating " + word + " in knownWordsDictionary (" + String(knownWordsDictionary.count) + ")")
             let entry = knownWordsDictionary[word]
             entry?.timesSeen += 1
+            entry?.lastSeenTime = Date().timeIntervalSince1970
             
             
             
