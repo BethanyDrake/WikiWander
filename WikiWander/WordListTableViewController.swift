@@ -11,14 +11,30 @@ import UIKit
 class WordListTableViewController: UITableViewController {
    
     
-    
-    
     @IBAction func exportCards(_ sender: UIButton) {
         print("exporting!")
         print(getCSV())
+        //writeToFile(text: getCSV())
     }
     
-    
+//    func writeToFile(text:String){
+//        let fileName = "flashcards.csv"
+//
+//        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+//
+//            let fileURL = dir.appendingPathComponent(fileName)
+//
+//            //writing
+//            do {
+//                try text.write(to: fileURL, atomically: false, encoding: .utf8)
+//                print("wrote it!")
+//            }
+//            catch {
+//                print("could not write to file")
+//            }
+//
+//        }
+//    }
     
     func getCSV()->String {
         var csv = ""
@@ -28,10 +44,8 @@ class WordListTableViewController: UITableViewController {
         return csv
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //clearKnownWords()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let savedKnownWords = loadKnownWords() {
             knownWords += savedKnownWords
             //knownWords += [KnownWord(word:"語種", pronounciation:"bah", definition: "brought those back after saving!")]
@@ -39,6 +53,15 @@ class WordListTableViewController: UITableViewController {
             loadSampleWords()
         }
         saveKnownWords()
+        
+        knownWords = knownWords.sorted(by: {$0.lastSeenTime > $1.lastSeenTime })
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //clearKnownWords()
+        
+        
         
 
         // Uncomment the following line to preserve selection between presentations
