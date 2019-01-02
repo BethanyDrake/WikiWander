@@ -18,14 +18,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <button key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="l9K-PL-Udm">
+                        <stackView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="c3X-Ey-wLu">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Export"/>
-                            <connections>
-                                <action selector="exportCards:" destination="Ukm-rq-VwX" eventType="touchUpInside" id="Akw-M6-vqd"/>
-                            </connections>
-                        </button>
+                            <subviews>
+                                <pickerView contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="g8f-21-Uw9">
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="XhY-6f-Yay"/>
+                                    </constraints>
+                                </pickerView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l9K-PL-Udm">
+                                    <rect key="frame" x="150" y="0.0" width="225" height="44"/>
+                                    <state key="normal" title="Export"/>
+                                    <connections>
+                                        <action selector="exportCards:" destination="Ukm-rq-VwX" eventType="touchUpInside" id="Akw-M6-vqd"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="KnownWordTableViewCell" rowHeight="64" id="ZUr-8G-sAD" customClass="KnownWordTableViewCell" customModule="WikiWander" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="375" height="64"/>
@@ -34,15 +45,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Definition" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rf7-3C-UQf">
-                                            <rect key="frame" x="46" y="33" width="323" height="30"/>
+                                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Definition" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rf7-3C-UQf">
+                                            <rect key="frame" x="16" y="33" width="323" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-                                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="chars    pinyin" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lhM-bP-IM4">
-                                            <rect key="frame" x="46" y="1" width="323" height="30"/>
+                                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="chars    pinyin" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lhM-bP-IM4">
+                                            <rect key="frame" x="16" y="0.0" width="323" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -63,6 +74,10 @@
                     </tableView>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="sortPicker" destination="g8f-21-Uw9" id="VIE-Xf-sy6"/>
+                        <outlet property="tableView" destination="Xg8-Fr-t1i" id="VRJ-1u-bZn"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ocC-1C-U6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

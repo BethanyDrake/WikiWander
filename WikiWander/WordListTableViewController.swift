@@ -8,9 +8,10 @@
 
 import UIKit
 
-class WordListTableViewController: UITableViewController {
+class WordListTableViewController: UITableViewController,  UIPickerViewDelegate, UIPickerViewDataSource {
    
-    
+    @IBOutlet weak var sortPicker: UIPickerView!
+    var sortModes = ["Recent", "Frequent"]
     @IBAction func exportCards(_ sender: UIButton) {
         print("exporting!")
         print(getCSV())
@@ -60,7 +61,8 @@ class WordListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //clearKnownWords()
-        
+        self.sortPicker.delegate = self
+        self.sortPicker.dataSource = self
         
         
 
@@ -69,6 +71,33 @@ class WordListTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    // Number of columns of data
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    // The number of rows of data
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
+    return sortModes.count
+    }
+    
+    // The data to return fopr the row and component (column) that's being passed in
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) ->String? {
+    return sortModes[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        print("changed sorting to: ", sortModes[row])
+        if row == 0 {
+            knownWords = knownWords.sorted(by: {$0.lastSeenTime > $1.lastSeenTime })
+        }
+        if row == 1 {
+            knownWords = knownWords.sorted(by: {$0.timesSeen > $1.timesSeen })
+        }
+        
+        tableView.reloadData()
     }
     
     func clearKnownWords(){
