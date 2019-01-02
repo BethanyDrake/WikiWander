@@ -13,13 +13,15 @@ class KnownWord: NSObject, NSCoding{
         aCoder.encode(word, forKey: "word")
         aCoder.encode(pronounciation, forKey: "pronounciation")
         aCoder.encode(definition, forKey: "definition")
+        aCoder.encode(timesSeen, forKey: "timesSeen")
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
         let word = aDecoder.decodeObject(forKey: "word") as! String
         let pronounciation = aDecoder.decodeObject(forKey: "pronounciation") as! String
         let definition = aDecoder.decodeObject(forKey: "definition") as! String
-        self.init(word: word, pronounciation: pronounciation, definition: definition)
+        let timesSeen = aDecoder.decodeInteger(forKey: "timesSeen")
+        self.init(word: word, pronounciation: pronounciation, definition: definition, timesSeen:timesSeen)
     
     }
     
@@ -31,10 +33,13 @@ class KnownWord: NSObject, NSCoding{
     //var tapCount = 1
     //var familiarty = 0
     var definition:String
+    var timesSeen:Int
     
-    init(word: String, pronounciation:String, definition:String) {
+    init(word: String, pronounciation:String, definition:String, timesSeen:Int = 1) {
+        print("initialising! times seen = ", timesSeen)
         self.word = word
         self.pronounciation = pronounciation
         self.definition = definition
+        self.timesSeen = timesSeen
     }
 }

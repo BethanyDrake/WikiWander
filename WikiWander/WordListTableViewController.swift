@@ -12,6 +12,7 @@ class WordListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //clearKnownWords()
+        
         if let savedKnownWords = loadKnownWords() {
             knownWords += savedKnownWords
             //knownWords += [KnownWord(word:"語種", pronounciation:"bah", definition: "brought those back after saving!")]
@@ -48,6 +49,7 @@ class WordListTableViewController: UITableViewController {
         print("saved =", isSuccessfulSave)
     }
     private func loadKnownWords() -> [KnownWord]? {
+        //return []
         return NSKeyedUnarchiver.unarchiveObject(withFile: KnownWord.ArchiveURL.path) as? [KnownWord]
     }
     func loadSampleWords() {
@@ -74,9 +76,11 @@ class WordListTableViewController: UITableViewController {
         
          print("CCCCCCCC")
         let knownWord = knownWords[indexPath.row]
-        cell.charsLabel.text = knownWord.word
+        cell.charsLabel.text =  knownWord.word + "\t" +
+                                knownWord.pronounciation + "\t" +
+                                String(knownWord.timesSeen)
         cell.definitionTextBox.text = knownWord.definition
-        cell.pinyinLabel.text = knownWord.pronounciation
+        //cell.pinyinLabel.text = knownWord.pronounciation
 
         return cell
     }

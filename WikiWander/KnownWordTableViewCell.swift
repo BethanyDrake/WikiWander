@@ -9,8 +9,9 @@
 import UIKit
 
 class KnownWordTableViewCell: UITableViewCell {
-    @IBOutlet weak var charsLabel: UILabel!
-    @IBOutlet weak var pinyinLabel: UILabel!
+    
+    @IBOutlet weak var charsLabel: UITextField!
+    //@IBOutlet weak var pinyinLabel: UILabel!
     
     @IBOutlet weak var definitionTextBox: UITextField!
     

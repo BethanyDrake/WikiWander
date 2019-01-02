@@ -16,6 +16,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
    
     @IBOutlet weak var definitionTextBox: UITextField!
     @IBOutlet weak var characterTextBox: UITextField!
+    @IBAction func colorButton(_ sender: UIButton) {
+        print("button clicked!") 
+    }
     
     let TAB = "    "
     
@@ -46,11 +49,12 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         self.view.addSubview(definitionTextBox)
         definitionTextBox.delegate = plainTextFieldDelegate
         characterTextBox.delegate = plainTextFieldDelegate
-        
-        knownWords = loadKnownWords() ?? []
+        knownWords = []
+        //knownWords = loadKnownWords() ?? []
+        knownWordsDictionary = convertKnownwordsToDictionary(words:knownWords)
         
     }
-    
+    var knownWordsDictionary:[String:KnownWord]  = [:]
     let plainTextFieldDelegate = PlainTextFieldDelegate()
     
     class PlainTextFieldDelegate : UIViewController, UITextFieldDelegate {
@@ -60,6 +64,46 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         
     }
     
+    func convertKnownwordsToDictionary(words:[KnownWord])->[String:KnownWord]{
+        var knownWordsDictionary:[String:KnownWord] = [:]
+        for word in words {
+            if knownWordsDictionary[word.word] != nil {
+                print ("already there, uh oh")
+            }
+            else {
+                print ("adding " + word.word + " to knownWordsDictionary (" + String(knownWordsDictionary.count) + ")")
+                knownWordsDictionary[word.word] = word
+            }
+        }
+        return knownWordsDictionary
+    }
+    
+    func incrementTaps(word: String){
+        if knownWordsDictionary[word] != nil {
+            knownWordsDictionary[word]?.timesSeen += 1
+        }
+        else {
+            print("havent seen that one yet, but don't worry, you will." )
+        }
+    }
+    
+    
+    func addOrUpdateKnownWord(word: String, pronounciation: String, definition: String){
+        if knownWordsDictionary[word] != nil {
+            print ("updating " + word + " in knownWordsDictionary (" + String(knownWordsDictionary.count) + ")")
+            let entry = knownWordsDictionary[word]
+            entry?.timesSeen += 1
+            
+            
+            
+            
+        }
+        else {
+            print ("adding " + word + " to knownWordsDictionary (" + String(knownWordsDictionary.count) + ")")
+            knownWordsDictionary[word] = KnownWord(word: word, pronounciation: pronounciation, definition: definition)
+        }
+        
+    }
     
 
     
@@ -70,7 +114,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         definitionTextBox.text = definitions[currentDefinition].definition
         characterTextBox.text = definitions[currentDefinition].word + TAB + definitions[currentDefinition].pronounciation
         selectRange(newRange: NSRange(location: definitions[currentDefinition].startIndex.encodedOffset, length: definitions[currentDefinition].word.count))
-        knownWords += [KnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)]
+        addOrUpdateKnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)
+//        knownWords += [KnownWord(word: newDefinition.word, pronounciation: newDefinition.pronounciation, definition: newDefinition.definition)]
         saveKnownWords()
     }
     
@@ -210,6 +255,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             definitions = []
             
             for word in possibleWords{
+                incrementTaps(word:word)
                 if let definitionsForWord = wordToDefinitions[word]{
                     for definition in definitionsForWord{
                         let posOfCharInWord = word.firstIndex(of: touchedChar)!
@@ -499,6 +545,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     private func saveKnownWords() {
         print("saving known words...")
+        
+        knownWords = Array(knownWordsDictionary.values)
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(knownWords, toFile: KnownWord.ArchiveURL.path)
         print("saved =", isSuccessfulSave)
     }
