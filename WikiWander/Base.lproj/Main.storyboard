@@ -28,8 +28,22 @@
                                         <constraint firstAttribute="width" constant="150" id="XhY-6f-Yay"/>
                                     </constraints>
                                 </pickerView>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTf-R2-n5r">
+                                    <rect key="frame" x="150" y="0.0" width="51" height="44"/>
+                                    <color key="onTintColor" red="1" green="0.092679248509805912" blue="0.045884972078167552" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="thumbTintColor" red="1" green="0.71162282805808263" blue="0.76066676597422611" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </switch>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbj-dI-EVb">
+                                    <rect key="frame" x="199" y="0.0" width="51" height="44"/>
+                                    <color key="onTintColor" red="1" green="0.87613995035982395" blue="0.0" alpha="0.62522007042253525" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="thumbTintColor" red="0.95461781300881965" green="1" blue="0.78573580479940608" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </switch>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pTQ-NO-cnF">
+                                    <rect key="frame" x="248" y="0.0" width="51" height="44"/>
+                                    <color key="thumbTintColor" red="0.82017801158097681" green="1" blue="0.73938273094520779" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </switch>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l9K-PL-Udm">
-                                    <rect key="frame" x="150" y="0.0" width="225" height="44"/>
+                                    <rect key="frame" x="297" y="0.0" width="78" height="44"/>
                                     <state key="normal" title="Export"/>
                                     <connections>
                                         <action selector="exportCards:" destination="Ukm-rq-VwX" eventType="touchUpInside" id="Akw-M6-vqd"/>
@@ -46,23 +60,32 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Definition" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rf7-3C-UQf">
-                                            <rect key="frame" x="16" y="33" width="323" height="30"/>
+                                            <rect key="frame" x="16" y="33" width="343" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
                                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="chars    pinyin" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lhM-bP-IM4">
-                                            <rect key="frame" x="16" y="0.0" width="323" height="30"/>
+                                            <rect key="frame" x="38" y="0.0" width="321" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZWK-af-ZcY">
+                                            <rect key="frame" x="6" y="0.0" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.0017250665040000001" green="0.89139410620000004" blue="0.49284995980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <connections>
+                                                <action selector="toggleColour:" destination="ZUr-8G-sAD" eventType="touchUpInside" id="JOT-Wk-bU5"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="charsLabel" destination="lhM-bP-IM4" id="44U-AT-t1x"/>
+                                    <outlet property="colourIndicator" destination="ZWK-af-ZcY" id="HAI-PK-X6t"/>
                                     <outlet property="definitionTextBox" destination="rf7-3C-UQf" id="t5u-En-S67"/>
                                 </connections>
                             </tableViewCell>

@@ -35,6 +35,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     
     let TAB = "    "
     
+    override func viewWillAppear(_ animated: Bool) {
+        knownWords = loadKnownWords() ?? []
+        knownWordsDictionary = convertKnownwordsToDictionary(words:knownWords)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveKnownWords()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -63,8 +72,8 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         definitionTextBox.delegate = plainTextFieldDelegate
         characterTextBox.delegate = plainTextFieldDelegate
         //knownWords = []
-        knownWords = loadKnownWords() ?? []
-        knownWordsDictionary = convertKnownwordsToDictionary(words:knownWords)
+        //knownWords = loadKnownWords() ?? []
+        //knownWordsDictionary = convertKnownwordsToDictionary(words:knownWords)
         
     }
     var knownWordsDictionary:[String:KnownWord]  = [:]

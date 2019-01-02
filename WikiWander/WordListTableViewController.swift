@@ -9,7 +9,7 @@
 import UIKit
 
 class WordListTableViewController: UITableViewController,  UIPickerViewDelegate, UIPickerViewDataSource {
-   
+    
     @IBOutlet weak var sortPicker: UIPickerView!
     var sortModes = ["Recent", "Frequent"]
     @IBAction func exportCards(_ sender: UIButton) {
@@ -57,6 +57,12 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
         
         knownWords = knownWords.sorted(by: {$0.lastSeenTime > $1.lastSeenTime })
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveKnownWords()
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,15 +138,12 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
         return knownWords.count
     }
     
-    func formatTime(duration: TimeInterval) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute, .second]
-        formatter.unitsStyle = .abbreviated
-        formatter.maximumUnitCount = 1
-        
-        return formatter.string(from: duration)!
-    }
+  
 
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print(knownWords[indexPath.row].word)
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("AAAAAAAA")
@@ -149,6 +152,7 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? KnownWordTableViewCell else {
             print("BBBBBB")
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+            
             print("DDDDDD")
             return cell
         }
@@ -157,15 +161,11 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
          print("CCCCCCCC")
         let knownWord = knownWords[indexPath.row]
         
+        cell.setWord(word: knownWord)
         
         
         
-        cell.charsLabel.text =  knownWord.word + "\t" +
-                                knownWord.pronounciation + "\t" +
-                                String(knownWord.timesSeen) + "\t" +
-            formatTime(duration: knownWord.lastSeenTime.distance(to: Date().timeIntervalSince1970))
-        cell.definitionTextBox.text = knownWord.definition
-        //cell.pinyinLabel.text = knownWord.pronounciation
+        
 
         return cell
     }
