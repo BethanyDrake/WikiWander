@@ -10,6 +10,13 @@ import UIKit
 
 class WordListTableViewController: UITableViewController,  UIPickerViewDelegate, UIPickerViewDataSource {
     
+    
+    @IBOutlet weak var redToggle: UISwitch!
+    @IBOutlet weak var greenToggle: UISwitch!
+    @IBOutlet weak var yellowToggle: UISwitch!
+    
+    
+    
     @IBOutlet weak var sortPicker: UIPickerView!
     var sortModes = ["Recent", "Frequent"]
     @IBAction func exportCards(_ sender: UIButton) {
@@ -37,6 +44,30 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
 //        }
 //    }
     
+    
+    @IBAction func redToggled(_ sender: Any) {
+         doToggles()
+    }
+    
+    @IBAction func yellowToggled(_ sender: Any) {
+         doToggles()
+    }
+    @IBAction func greenToggled(_ sender: Any) {
+         doToggles()
+    }
+    
+    func doToggles() {
+        tableView.reloadData()
+        wordsToDisplay = knownWords.filter({ (word:KnownWord) -> Bool in
+            word.familiarity == 0 && redToggle.isOn ||
+            word.familiarity == 1 && yellowToggle.isOn ||
+            word.familiarity == 2 && greenToggle.isOn
+        })
+        tableView.reloadData()
+    }
+    
+    var wordsToDisplay:[KnownWord] = []
+    
     func getCSV()->String {
         var csv = ""
         for word in knownWords {
@@ -49,6 +80,8 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
         super.viewWillAppear(animated)
         if let savedKnownWords = loadKnownWords() {
             knownWords += savedKnownWords
+            doToggles()
+            
             //knownWords += [KnownWord(word:"語種", pronounciation:"bah", definition: "brought those back after saving!")]
         }else{
             loadSampleWords()
@@ -103,6 +136,8 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
             knownWords = knownWords.sorted(by: {$0.timesSeen > $1.timesSeen })
         }
         
+        doToggles()
+        
         tableView.reloadData()
     }
     
@@ -135,14 +170,14 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return knownWords.count
+        return wordsToDisplay.count
     }
     
   
 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print(knownWords[indexPath.row].word)
+        print(wordsToDisplay[indexPath.row].word)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -159,7 +194,7 @@ class WordListTableViewController: UITableViewController,  UIPickerViewDelegate,
         
         
          print("CCCCCCCC")
-        let knownWord = knownWords[indexPath.row]
+        let knownWord = wordsToDisplay[indexPath.row]
         
         cell.setWord(word: knownWord)
         

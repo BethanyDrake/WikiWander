@@ -32,15 +32,24 @@
                                     <rect key="frame" x="150" y="0.0" width="51" height="44"/>
                                     <color key="onTintColor" red="1" green="0.092679248509805912" blue="0.045884972078167552" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="thumbTintColor" red="1" green="0.71162282805808263" blue="0.76066676597422611" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <connections>
+                                        <action selector="redToggled:" destination="Ukm-rq-VwX" eventType="valueChanged" id="3Hd-qv-7VS"/>
+                                    </connections>
                                 </switch>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbj-dI-EVb">
                                     <rect key="frame" x="199" y="0.0" width="51" height="44"/>
                                     <color key="onTintColor" red="1" green="0.87613995035982395" blue="0.0" alpha="0.62522007042253525" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="thumbTintColor" red="0.95461781300881965" green="1" blue="0.78573580479940608" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <connections>
+                                        <action selector="yellowToggled:" destination="Ukm-rq-VwX" eventType="valueChanged" id="VnD-0w-2Qz"/>
+                                    </connections>
                                 </switch>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pTQ-NO-cnF">
                                     <rect key="frame" x="248" y="0.0" width="51" height="44"/>
                                     <color key="thumbTintColor" red="0.82017801158097681" green="1" blue="0.73938273094520779" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <connections>
+                                        <action selector="greenToggled:" destination="Ukm-rq-VwX" eventType="valueChanged" id="LFT-Zq-Fiq"/>
+                                    </connections>
                                 </switch>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l9K-PL-Udm">
                                     <rect key="frame" x="297" y="0.0" width="78" height="44"/>
@@ -98,8 +107,11 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="greenToggle" destination="pTQ-NO-cnF" id="aI6-zH-B1A"/>
+                        <outlet property="redToggle" destination="HTf-R2-n5r" id="0nt-u6-nBQ"/>
                         <outlet property="sortPicker" destination="g8f-21-Uw9" id="VIE-Xf-sy6"/>
                         <outlet property="tableView" destination="Xg8-Fr-t1i" id="VRJ-1u-bZn"/>
+                        <outlet property="yellowToggle" destination="gbj-dI-EVb" id="9qQ-fB-id9"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ocC-1C-U6B" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -533,13 +533,16 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
 
     
+    
+    let oilPaintingUrl = URL(string: "https://zh.wikipedia.org/wiki/%E6%B2%B9%E7%94%BB")!
     let longArticalUrl = URL(string: "https://zh.wikipedia.org/wiki/%E6%B3%A2%E5%85%B0%E8%AF%AD")!
     @IBAction func nextButton(_ sender: UIButton) {
         articleTextBox.text = "loading..."
         let startTime = NSDate().timeIntervalSince1970
         
+        let url = oilPaintingUrl
         //let url = longArticalUrl
-        let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
+        //let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
@@ -550,9 +553,24 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             let articalContent = self.getArticalContent(text: text)
             
             
+           
+            let nsText = articalContent as NSString
+            var textRange = NSMakeRange(0, nsText.length)
+            let attributedString = NSMutableAttributedString(string:articalContent)
             
+            let range1 = nsText.range(of:"画", range:textRange)
+            textRange = NSMakeRange(range1.upperBound, nsText.length - range1.upperBound)
+            print(textRange)
+//
+            let range2 = nsText.range(of: "画", range: textRange)
+//
+            
+            
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range1)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: range2)
             DispatchQueue.main.async {
-                self.articleTextBox.text = articalContent
+                //self.articleTextBox.text = articalContent
+                self.articleTextBox.attributedText = attributedString
             }
             //print(articalContent)
             print("finished")
@@ -562,6 +580,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         task.resume()
     }
     
+
     
     var knownWords = [KnownWord]()
     
@@ -582,3 +601,4 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
     
 }
+
