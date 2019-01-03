@@ -554,20 +554,40 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             
             
            
+//            let nsText = articalContent as NSString
+//            var textRange = NSMakeRange(0, nsText.length)
+//            let attributedString = NSMutableAttributedString(string:articalContent)
+//
+//            let range1 = nsText.range(of:"画", range:textRange)
+//            textRange = NSMakeRange(range1.upperBound, nsText.length - range1.upperBound)
+//            print(textRange)
+////
+//            let range2 = nsText.range(of: "画", range: textRange)
+////
+//
+//
+//            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range1)
+//            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: range2)
+            let attributedString = NSMutableAttributedString(string:articalContent)
             let nsText = articalContent as NSString
             var textRange = NSMakeRange(0, nsText.length)
-            let attributedString = NSMutableAttributedString(string:articalContent)
+            var toConsume = articalContent.suffix(articalContent.count)
+            while textRange.length > 0 {
+                //get the first character
+                let c1 = toConsume.prefix(1)
+                toConsume = toConsume.suffix(toConsume.count - 1)
+                
+                if (self.knownWordsDictionary[String(c1)] != nil) {
+                    let r1 = nsText.range(of:String(c1), range:textRange)
+                    textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
+                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: r1)
+                    break
+                }
+                
+                
+            }
             
-            let range1 = nsText.range(of:"画", range:textRange)
-            textRange = NSMakeRange(range1.upperBound, nsText.length - range1.upperBound)
-            print(textRange)
-//
-            let range2 = nsText.range(of: "画", range: textRange)
-//
             
-            
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range1)
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: range2)
             DispatchQueue.main.async {
                 //self.articleTextBox.text = articalContent
                 self.articleTextBox.attributedText = attributedString
