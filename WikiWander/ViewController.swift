@@ -47,6 +47,9 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        getDictionary()
+        
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         
         articleTextBox.addGestureRecognizer(tap)
@@ -250,7 +253,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
     }
     
     func lookUpSelectedText() {
-        getDictionary()
+        
 
         
         var wordToLookUp:String? = nil
@@ -572,19 +575,35 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             let nsText = articalContent as NSString
             var textRange = NSMakeRange(0, nsText.length)
             var toConsume = articalContent.suffix(articalContent.count)
-            while textRange.length > 0 {
+            while toConsume.count > 100 {
+                
                 //get the first character
-                let c1 = toConsume.prefix(1)
-                toConsume = toConsume.suffix(toConsume.count - 1)
+                let c1:Character = toConsume.first ?? "?"
+                print("started processing ", c1)
                 
-                if (self.knownWordsDictionary[String(c1)] != nil) {
-                    let r1 = nsText.range(of:String(c1), range:textRange)
-                    textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
-                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: r1)
-                    break
+                let possibleWords:[String] = (self.charToWords[c1] ?? []).sorted() //TODO: make this lenght, not alphabetical
+                print("possibleWords: ", possibleWords)
+                if possibleWords.count == 0 {
+                    print("no possible words for:", c1)
+                    toConsume = toConsume.suffix(toConsume.count - 1)
+                    continue
                 }
-                
-                
+                var theWord = ""
+                for possibileWord in possibleWords {
+                    theWord = possibileWord
+                    if (self.knownWordsDictionary[theWord] != nil){
+                        print("known word=", theWord)
+                        let r1 = nsText.range(of:String(theWord), range:textRange)
+                        print("r1= ", r1)
+                        if r1.length != 0 {
+                            textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
+                            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: r1)
+                            break
+                        }
+                    }
+                }
+                print("finished processing ", theWord)
+                toConsume = toConsume.suffix(toConsume.count - theWord.count)
             }
             
             
