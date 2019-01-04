@@ -575,35 +575,48 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             let nsText = articalContent as NSString
             var textRange = NSMakeRange(0, nsText.length)
             var toConsume = articalContent.suffix(articalContent.count)
-            while toConsume.count > 100 {
+            while toConsume.count > 0 {
                 
                 //get the first character
                 let c1:Character = toConsume.first ?? "?"
                 print("started processing ", c1)
                 
-                let possibleWords:[String] = (self.charToWords[c1] ?? []).sorted() //TODO: make this lenght, not alphabetical
+                let possibleWords:[String] = (self.charToWords[c1] ?? []).sorted(by: { (x, x2) -> Bool in
+                    x.count > x2.count
+                }) //TODO: make this lenght, not alphabetical
                 print("possibleWords: ", possibleWords)
                 if possibleWords.count == 0 {
                     print("no possible words for:", c1)
                     toConsume = toConsume.suffix(toConsume.count - 1)
                     continue
                 }
-                var theWord = ""
+                var theWord = String(c1)
+                
+               
                 for possibileWord in possibleWords {
-                    theWord = possibileWord
-                    if (self.knownWordsDictionary[theWord] != nil){
-                        print("known word=", theWord)
-                        let r1 = nsText.range(of:String(theWord), range:textRange)
-                        print("r1= ", r1)
-                        if r1.length != 0 {
-                            textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
-                            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: r1)
-                            break
-                        }
+                    if (toConsume.prefix(possibileWord.count) == possibileWord) {
+                        theWord = possibileWord
+                        break
                     }
                 }
+                
+                print("curr text range: ", textRange)
+                
+                let r1 = nsText.range(of:String(theWord), range:textRange)
+                print("r1: ", r1)
+                textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
+                print("new text range: ", textRange)
+                
+                
+                let knownWord = self.knownWordsDictionary[theWord]
+                if knownWord != nil {
+                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: self.familiarityToColor[knownWord!.familiarity]!, range: r1)
+                    print("highlighted=", theWord)
+                }
                 print("finished processing ", theWord)
+                
                 toConsume = toConsume.suffix(toConsume.count - theWord.count)
+                print("to consume: ", toConsume.prefix(3))
             }
             
             
