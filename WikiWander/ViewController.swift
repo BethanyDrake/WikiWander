@@ -22,15 +22,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         let currWord = knownWordsDictionary[definitions[currentDefinition].word]
         currWord?.familiarity = (currWord!.familiarity + 1)%3
         colorIndicator.backgroundColor =  familiarityToColor[currWord?.familiarity ?? -1]
-        
+        highlightKnownWords()
      
     }
     
     let familiarityToColor:[Int:UIColor] = [
         -1:UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0),
         0:UIColor(red: 255/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0),
-        1:UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0),
-        2:UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
+        1:UIColor(red: 242/255.0, green: 181/255.0, blue: 50/255.0, alpha: 1.0),
+        2:UIColor(red: 66/255.0, green: 165/255.0, blue: 0/255.0, alpha: 1.0)
     ]
     
     let TAB = "    "
@@ -127,6 +127,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
         else {
             print ("adding " + word + " to knownWordsDictionary (" + String(knownWordsDictionary.count) + ")")
             knownWordsDictionary[word] = KnownWord(word: word, pronounciation: pronounciation, definition: definition)
+            highlightKnownWords()
         }
         
     }
@@ -537,15 +538,70 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
 
     
     
+    func highlightKnownWords(){
+        let attributedString = NSMutableAttributedString(string:articalContent)
+        let nsText = articalContent as NSString
+        var textRange = NSMakeRange(0, nsText.length)
+        var toConsume = articalContent.suffix(articalContent.count)
+        while toConsume.count > 0 {
+            
+            //get the first character
+            let c1:Character = toConsume.first ?? "?"
+            print("started processing ", c1)
+            
+            let possibleWords:[String] = (self.charToWords[c1] ?? []).sorted(by: { (x, x2) -> Bool in
+                x.count > x2.count
+            }) //TODO: make this lenght, not alphabetical
+            print("possibleWords: ", possibleWords)
+            if possibleWords.count == 0 {
+                print("no possible words for:", c1)
+                toConsume = toConsume.suffix(toConsume.count - 1)
+                continue
+            }
+            var theWord = String(c1)
+            
+            
+            for possibileWord in possibleWords {
+                if (toConsume.prefix(possibileWord.count) == possibileWord) {
+                    theWord = possibileWord
+                    break
+                }
+            }
+            
+            print("curr text range: ", textRange)
+            
+            let r1 = nsText.range(of:String(theWord), range:textRange)
+            print("r1: ", r1)
+            textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
+            print("new text range: ", textRange)
+            
+            
+            let knownWord = self.knownWordsDictionary[theWord]
+            if knownWord != nil {
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: self.familiarityToColor[knownWord!.familiarity]!, range: r1)
+                print("highlighted=", theWord)
+            }
+            print("finished processing ", theWord)
+            
+            toConsume = toConsume.suffix(toConsume.count - theWord.count)
+            print("to consume: ", toConsume.prefix(3))
+        }
+        
+        self.articleTextBox.attributedText = attributedString
+        
+    }
+    
+    
     let oilPaintingUrl = URL(string: "https://zh.wikipedia.org/wiki/%E6%B2%B9%E7%94%BB")!
     let longArticalUrl = URL(string: "https://zh.wikipedia.org/wiki/%E6%B3%A2%E5%85%B0%E8%AF%AD")!
+    var articalContent = ""
     @IBAction func nextButton(_ sender: UIButton) {
         articleTextBox.text = "loading..."
         let startTime = NSDate().timeIntervalSince1970
         
-        let url = oilPaintingUrl
+        //let url = oilPaintingUrl
         //let url = longArticalUrl
-        //let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
+        let url = URL(string: "https://zh.wikipedia.org/zh-cn/Special:Random")!
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
@@ -553,7 +609,7 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
             let text = String(data: data, encoding: .utf8)!
             print("got Data", NSDate().timeIntervalSince1970 - startTime)
             
-            let articalContent = self.getArticalContent(text: text)
+            
             
             
            
@@ -571,58 +627,15 @@ class ViewController: UIViewController, URLSessionTaskDelegate {
 //
 //            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range1)
 //            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: range2)
-            let attributedString = NSMutableAttributedString(string:articalContent)
-            let nsText = articalContent as NSString
-            var textRange = NSMakeRange(0, nsText.length)
-            var toConsume = articalContent.suffix(articalContent.count)
-            while toConsume.count > 0 {
-                
-                //get the first character
-                let c1:Character = toConsume.first ?? "?"
-                print("started processing ", c1)
-                
-                let possibleWords:[String] = (self.charToWords[c1] ?? []).sorted(by: { (x, x2) -> Bool in
-                    x.count > x2.count
-                }) //TODO: make this lenght, not alphabetical
-                print("possibleWords: ", possibleWords)
-                if possibleWords.count == 0 {
-                    print("no possible words for:", c1)
-                    toConsume = toConsume.suffix(toConsume.count - 1)
-                    continue
-                }
-                var theWord = String(c1)
-                
-               
-                for possibileWord in possibleWords {
-                    if (toConsume.prefix(possibileWord.count) == possibileWord) {
-                        theWord = possibileWord
-                        break
-                    }
-                }
-                
-                print("curr text range: ", textRange)
-                
-                let r1 = nsText.range(of:String(theWord), range:textRange)
-                print("r1: ", r1)
-                textRange = NSMakeRange(r1.upperBound, nsText.length - r1.upperBound)
-                print("new text range: ", textRange)
-                
-                
-                let knownWord = self.knownWordsDictionary[theWord]
-                if knownWord != nil {
-                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: self.familiarityToColor[knownWord!.familiarity]!, range: r1)
-                    print("highlighted=", theWord)
-                }
-                print("finished processing ", theWord)
-                
-                toConsume = toConsume.suffix(toConsume.count - theWord.count)
-                print("to consume: ", toConsume.prefix(3))
-            }
+            
+            
             
             
             DispatchQueue.main.async {
                 //self.articleTextBox.text = articalContent
-                self.articleTextBox.attributedText = attributedString
+                self.articalContent = self.getArticalContent(text: text)
+                self.highlightKnownWords()
+                
             }
             //print(articalContent)
             print("finished")
